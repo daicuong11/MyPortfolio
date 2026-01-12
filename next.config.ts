@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
     unoptimized: true, // Required for static export
   },
   // Uncomment and set basePath if your repo is NOT username.github.io
-  // basePath: "/MyPortfolio", // Replace with your repo name
-  // trailingSlash: true,
+  basePath: "/MyPortfolio", // Replace with your repo name
+  trailingSlash: true,
 };
 
 export default nextConfig;
