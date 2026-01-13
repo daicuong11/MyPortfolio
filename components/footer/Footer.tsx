@@ -3,26 +3,42 @@
 import { memo } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "@/lib/i18n";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 function Footer() {
   const t = useTranslations();
+  const { colors, getTitleGradient } = useThemeColors();
 
   return (
     <footer className="relative w-full py-16 bg-gradient-to-b from-black to-[#050510] overflow-hidden">
-      {/* Enhanced animated border top */}
+      {/* Enhanced animated border top - themed */}
       <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `linear-gradient(90deg, transparent, rgba(${colors.accent}, 0.4), transparent)`,
+          }}
+        />
         <motion.div
           animate={{ x: ["-100%", "100%"] }}
           transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60"
+          className="absolute inset-0 opacity-60"
+          style={{
+            backgroundImage: `linear-gradient(90deg, transparent, rgba(${colors.accent}, 1), transparent)`,
+          }}
         />
       </div>
 
-      {/* Background effects */}
+      {/* Background effects - themed */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-20 left-1/4 w-[400px] h-[400px] bg-cyan-500/5 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-3xl" />
+        <div 
+          className="absolute -top-20 left-1/4 w-[400px] h-[400px] rounded-full blur-3xl"
+          style={{ backgroundColor: `rgba(${colors.primary}, 0.05)` }}
+        />
+        <div 
+          className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl"
+          style={{ backgroundColor: `rgba(${colors.secondary}, 0.05)` }}
+        />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
@@ -37,7 +53,11 @@ function Footer() {
           <div className="space-y-4">
             <motion.h2
               whileHover={{ scale: 1.05 }}
-              className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 bg-clip-text text-transparent drop-shadow-[0_0_16px_rgba(6,182,212,0.6)]"
+              className="text-2xl font-bold"
+              style={{
+                ...getTitleGradient(),
+                filter: `drop-shadow(0 0 16px rgba(${colors.primary}, 0.6))`,
+              }}
             >
               {t.footer.name}
             </motion.h2>
@@ -60,7 +80,16 @@ function Footer() {
                   transition={{ delay: i * 0.1 }}
                   whileHover={{ scale: 1.2, y: -4 }}
                   whileTap={{ scale: 0.9 }}
-                  className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-cyan-400/50 flex items-center justify-center transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer"
+                  className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border flex items-center justify-center transition-all duration-300 cursor-pointer"
+                  style={{ borderColor: `rgba(${colors.accent}, 0.1)` }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.5)`;
+                    e.currentTarget.style.boxShadow = `0 10px 30px rgba(${colors.primary}, 0.2)`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
                 >
                   {social.icon === "github" && (
                     <svg className="w-5 h-5 text-gray-400 hover:text-cyan-300 transition-colors" fill="currentColor" viewBox="0 0 24 24">
@@ -121,7 +150,18 @@ function Footer() {
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.05 }}
                   whileHover={{ scale: 1.1, y: -2 }}
-                  className="px-3 py-1.5 text-xs rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 text-cyan-300 border border-cyan-400/20 hover:border-cyan-400/50 transition-all duration-200 cursor-pointer"
+                  className="px-3 py-1.5 text-xs rounded-lg border transition-all duration-200 cursor-pointer"
+                  style={{
+                    backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 0.1), rgba(${colors.primary}, 0.1))`,
+                    color: `rgba(${colors.accent}, 0.9)`,
+                    borderColor: `rgba(${colors.accent}, 0.2)`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.5)`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.2)`;
+                  }}
                 >
                   {tech}
                 </motion.span>
@@ -158,7 +198,20 @@ function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 hover:border-cyan-400/60 text-cyan-300 text-sm font-medium transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/20 cursor-pointer"
+              className="group flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-300 cursor-pointer"
+              style={{
+                backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                borderColor: `rgba(${colors.accent}, 0.3)`,
+                color: `rgba(${colors.accent}, 0.9)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                e.currentTarget.style.boxShadow = `0 10px 30px rgba(${colors.primary}, 0.2)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
               <svg className="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

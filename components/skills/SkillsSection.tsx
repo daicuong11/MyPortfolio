@@ -13,9 +13,15 @@ function SkillsSection() {
   return (
     <section className="relative py-32 px-6 bg-gradient-to-b from-black to-[#050a1a] overflow-hidden">
 
-      {/* cinematic light blobs */}
-      <div className="absolute -top-40 left-1/2 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[160px] -translate-x-1/2" />
-        <div className="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[160px]" />
+      {/* cinematic light blobs - themed */}
+      <div 
+        className="absolute -top-40 left-1/2 w-[600px] h-[600px] rounded-full blur-[160px] -translate-x-1/2"
+        style={{ backgroundColor: `rgba(${colors.primary}, 0.2)` }}
+      />
+        <div 
+          className="absolute top-1/2 -right-40 w-[500px] h-[500px] rounded-full blur-[160px]"
+          style={{ backgroundColor: `rgba(${colors.secondary}, 0.2)` }}
+        />
       <div className="max-w-7xl mx-auto">
       <motion.h2
         initial={{ opacity: 0, y: 40 }}

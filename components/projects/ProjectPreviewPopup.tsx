@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Minimize2, Play, Pause, Volume2, VolumeX, RotateCcw } from "lucide-react";
 import { useTranslations } from "@/lib/i18n";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 interface ProjectPreviewPopupProps {
   isOpen: boolean;
@@ -26,6 +27,7 @@ export default function ProjectPreviewPopup({
   const [isMuted, setIsMuted] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const t = useTranslations();
+  const { colors } = useThemeColors();
 
   useEffect(() => {
     setMounted(true);
@@ -139,7 +141,10 @@ export default function ProjectPreviewPopup({
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5 }}
-                className="absolute -inset-6 bg-gradient-to-r from-cyan-500/30 via-purple-500/30 to-cyan-500/30 rounded-3xl blur-3xl"
+                className="absolute -inset-6 rounded-3xl blur-3xl"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.3), rgba(${colors.secondary}, 0.3), rgba(${colors.primary}, 0.3))`,
+                }}
               />
               
               {/* Pulsing outer glow */}
@@ -153,16 +158,22 @@ export default function ProjectPreviewPopup({
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="absolute -inset-8 bg-gradient-to-r from-cyan-400/20 via-purple-600/20 to-cyan-400/20 rounded-3xl blur-3xl"
+                className="absolute -inset-8 rounded-3xl blur-3xl"
+                style={{
+                  backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 0.2), rgba(${colors.secondary}, 0.2), rgba(${colors.accent}, 0.2))`,
+                }}
               />
 
               {/* Main popup content */}
               <motion.div 
-                initial={{ borderColor: "rgba(0, 245, 255, 0.1)" }}
-                animate={{ borderColor: "rgba(0, 245, 255, 0.4)" }}
+                initial={{ borderColor: `rgba(${colors.accent}, 0.1)` }}
+                animate={{ borderColor: `rgba(${colors.accent}, 0.4)` }}
                 transition={{ duration: 0.4, delay: 0.2 }}
-                className="relative w-full h-full rounded-2xl overflow-hidden backdrop-blur-xl bg-black/90 border-2 shadow-[0_0_80px_rgba(0,245,255,0.6)]"
-                style={{ borderColor: "rgba(0, 245, 255, 0.4)" }}
+                className="relative w-full h-full rounded-2xl overflow-hidden backdrop-blur-xl bg-black/90 border-2"
+                style={{ 
+                  borderColor: `rgba(${colors.accent}, 0.4)`,
+                  boxShadow: `0 0 80px rgba(${colors.accent}, 0.6)`,
+                }}
               >
                 {/* Header */}
                 <motion.div 
@@ -175,7 +186,13 @@ export default function ProjectPreviewPopup({
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3, duration: 0.4 }}
-                    className="text-xl font-bold bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent"
+                    className="text-xl font-bold"
+                    style={{
+                      backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 1), rgba(${colors.secondary}, 1))`,
+                      WebkitBackgroundClip: "text",
+                      backgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
                   >
                     {title}
                   </motion.h3>
@@ -188,12 +205,22 @@ export default function ProjectPreviewPopup({
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={onClose}
-                    className="group relative flex items-center justify-center w-9 h-9 rounded-full bg-white/10 border border-white/20 hover:bg-cyan-400/20 hover:border-cyan-400/40 transition-all duration-300 cursor-pointer"
+                    className="group relative flex items-center justify-center w-9 h-9 rounded-full bg-white/10 border transition-all duration-300 cursor-pointer"
+                    style={{ borderColor: `rgba(${colors.accent}, 0.2)` }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = `rgba(${colors.accent}, 0.2)`;
+                      e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.4)`;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)";
+                      e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.2)`;
+                    }}
                     aria-label="Close preview"
                   >
                     <Minimize2
                       size={16}
-                      className="text-cyan-300 group-hover:text-cyan-400 transition-colors"
+                      style={{ color: `rgba(${colors.accent}, 0.9)` }}
+                      className="group-hover:brightness-110 transition-all"
                     />
                     <motion.div 
                       className="absolute inset-0 rounded-full bg-cyan-400/20 blur-md"
@@ -253,14 +280,29 @@ export default function ProjectPreviewPopup({
                             }
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-400/30 hover:border-cyan-400/60 hover:from-cyan-500/30 hover:to-purple-500/30 transition-all duration-300 cursor-pointer"
+                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        style={{
+                          backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                          borderColor: `rgba(${colors.accent}, 0.3)`,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.3), rgba(${colors.secondary}, 0.3))`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`;
+                        }}
                       >
                         {isPlaying ? (
-                          <Pause size={18} className="text-cyan-300" />
+                          <Pause size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         ) : (
-                          <Play size={18} className="text-cyan-300 ml-0.5" />
+                          <Play size={18} className="ml-0.5" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         )}
-                        <div className="absolute inset-0 rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/10 blur-sm transition-all duration-300" />
+                        <div 
+                          className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
+                          style={{ backgroundColor: `rgba(${colors.accent}, 0.1)` }}
+                        />
                       </motion.button>
 
                       {/* Mute/Unmute */}
@@ -273,14 +315,29 @@ export default function ProjectPreviewPopup({
                             setIsMuted(!isMuted);
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-400/30 hover:border-cyan-400/60 hover:from-cyan-500/30 hover:to-purple-500/30 transition-all duration-300 cursor-pointer"
+                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        style={{
+                          backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                          borderColor: `rgba(${colors.accent}, 0.3)`,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.3), rgba(${colors.secondary}, 0.3))`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`;
+                        }}
                       >
                         {isMuted ? (
-                          <VolumeX size={18} className="text-cyan-300" />
+                          <VolumeX size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         ) : (
-                          <Volume2 size={18} className="text-cyan-300" />
+                          <Volume2 size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         )}
-                        <div className="absolute inset-0 rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/10 blur-sm transition-all duration-300" />
+                        <div 
+                          className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
+                          style={{ backgroundColor: `rgba(${colors.accent}, 0.1)` }}
+                        />
                       </motion.button>
 
                       {/* Restart */}
@@ -294,16 +351,37 @@ export default function ProjectPreviewPopup({
                             setIsPlaying(true);
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-400/30 hover:border-cyan-400/60 hover:from-cyan-500/30 hover:to-purple-500/30 transition-all duration-300 cursor-pointer"
+                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        style={{
+                          backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                          borderColor: `rgba(${colors.accent}, 0.3)`,
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.3), rgba(${colors.secondary}, 0.3))`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+                          e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`;
+                        }}
                       >
-                        <RotateCcw size={16} className="text-cyan-300" />
-                        <div className="absolute inset-0 rounded-full bg-cyan-400/0 group-hover:bg-cyan-400/10 blur-sm transition-all duration-300" />
+                        <RotateCcw size={16} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                        <div 
+                          className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
+                          style={{ backgroundColor: `rgba(${colors.accent}, 0.1)` }}
+                        />
                       </motion.button>
                     </div>
 
                     {/* Esc hint */}
                     <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <kbd className="px-2 py-1 rounded-lg bg-white/10 border border-white/20 text-[10px] font-mono font-medium text-cyan-300">
+                      <kbd 
+                        className="px-2 py-1 rounded-lg bg-white/10 border text-[10px] font-mono font-medium"
+                        style={{ 
+                          borderColor: `rgba(${colors.accent}, 0.2)`,
+                          color: `rgba(${colors.accent}, 0.9)`,
+                        }}
+                      >
                         Esc
                       </kbd>
                       <span className="hidden sm:inline">
@@ -322,8 +400,14 @@ export default function ProjectPreviewPopup({
                     className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-30"
                   >
                     <div className="flex flex-col items-center gap-3">
-                      <div className="w-12 h-12 border-4 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin" />
-                      <span className="text-cyan-300 text-sm font-medium">
+                      <div 
+                        className="w-12 h-12 border-4 rounded-full animate-spin"
+                        style={{
+                          borderColor: `rgba(${colors.accent}, 0.3)`,
+                          borderTopColor: `rgba(${colors.accent}, 1)`,
+                        }}
+                      />
+                      <span className="text-sm font-medium" style={{ color: `rgba(${colors.accent}, 0.9)` }}>
                         {t.projects.loadingVideo}
                       </span>
                     </div>

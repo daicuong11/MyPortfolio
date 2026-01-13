@@ -2,8 +2,10 @@
 
 import { useEffect, useState, useRef, memo } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 function CustomCursor() {
+  const { colors } = useThemeColors();
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
@@ -116,19 +118,19 @@ function CustomCursor() {
             style={{
               width: "48px",
               height: "48px",
-              borderColor: "#00f5ff",
+              borderColor: `rgb(${colors.accent})`,
               boxShadow: `
-                0 0 25px rgba(0, 245, 255, 0.8),
-                0 0 50px rgba(0, 245, 255, 0.5),
-                0 0 75px rgba(0, 245, 255, 0.3),
-                inset 0 0 25px rgba(0, 245, 255, 0.3)
+                0 0 25px rgba(${colors.accent}, 0.8),
+                0 0 50px rgba(${colors.accent}, 0.5),
+                0 0 75px rgba(${colors.accent}, 0.3),
+                inset 0 0 25px rgba(${colors.accent}, 0.3)
               `,
             }}
             animate={{
               boxShadow: [
-                `0 0 25px rgba(0, 245, 255, 0.8), 0 0 50px rgba(0, 245, 255, 0.5), 0 0 75px rgba(0, 245, 255, 0.3), inset 0 0 25px rgba(0, 245, 255, 0.3)`,
-                `0 0 35px rgba(0, 245, 255, 1), 0 0 70px rgba(0, 245, 255, 0.7), 0 0 100px rgba(0, 245, 255, 0.4), inset 0 0 30px rgba(0, 245, 255, 0.4)`,
-                `0 0 25px rgba(0, 245, 255, 0.8), 0 0 50px rgba(0, 245, 255, 0.5), 0 0 75px rgba(0, 245, 255, 0.3), inset 0 0 25px rgba(0, 245, 255, 0.3)`,
+                `0 0 25px rgba(${colors.accent}, 0.8), 0 0 50px rgba(${colors.accent}, 0.5), 0 0 75px rgba(${colors.accent}, 0.3), inset 0 0 25px rgba(${colors.accent}, 0.3)`,
+                `0 0 35px rgba(${colors.accent}, 1), 0 0 70px rgba(${colors.accent}, 0.7), 0 0 100px rgba(${colors.accent}, 0.4), inset 0 0 30px rgba(${colors.accent}, 0.4)`,
+                `0 0 25px rgba(${colors.accent}, 0.8), 0 0 50px rgba(${colors.accent}, 0.5), 0 0 75px rgba(${colors.accent}, 0.3), inset 0 0 25px rgba(${colors.accent}, 0.3)`,
               ],
             }}
             transition={{
@@ -144,8 +146,8 @@ function CustomCursor() {
             style={{
               width: "4px",
               height: "4px",
-              backgroundColor: "#00f5ff",
-              boxShadow: "0 0 15px rgba(0, 245, 255, 1), 0 0 30px rgba(0, 245, 255, 0.6)",
+              backgroundColor: `rgb(${colors.accent})`,
+              boxShadow: `0 0 15px rgba(${colors.accent}, 1), 0 0 30px rgba(${colors.accent}, 0.6)`,
             }}
             animate={{
               scale: [1, 1.3, 1],
@@ -164,11 +166,11 @@ function CustomCursor() {
             style={{
               width: "16px",
               height: "1.5px",
-              background: "linear-gradient(90deg, transparent, #00f5ff, transparent)",
+              background: `linear-gradient(90deg, transparent, rgb(${colors.accent}), transparent)`,
               left: "50%",
               top: "50%",
               transform: "translate(-50%, -50%)",
-              boxShadow: "0 0 10px rgba(0, 245, 255, 0.9)",
+              boxShadow: `0 0 10px rgba(${colors.accent}, 0.9)`,
             }}
             animate={{
               width: isHovering ? "24px" : "16px",
@@ -187,11 +189,11 @@ function CustomCursor() {
             style={{
               width: "1.5px",
               height: "16px",
-              background: "linear-gradient(180deg, transparent, #00f5ff, transparent)",
+              background: `linear-gradient(180deg, transparent, rgb(${colors.accent}), transparent)`,
               left: "50%",
               top: "50%",
               transform: "translate(-50%, -50%)",
-              boxShadow: "0 0 10px rgba(0, 245, 255, 0.9)",
+              boxShadow: `0 0 10px rgba(${colors.accent}, 0.9)`,
             }}
             animate={{
               height: isHovering ? "24px" : "16px",
@@ -213,10 +215,11 @@ function CustomCursor() {
           ].map((pos, i) => (
             <motion.div
               key={i}
-              className="absolute w-1.5 h-1.5 bg-cyan-400"
+              className="absolute w-1.5 h-1.5"
               style={{
                 ...pos,
-                boxShadow: "0 0 8px rgba(0, 245, 255, 0.8)",
+                backgroundColor: `rgb(${colors.accent})`,
+                boxShadow: `0 0 8px rgba(${colors.accent}, 0.8)`,
               }}
               animate={{
                 opacity: [0.5, 1, 0.5],
@@ -249,8 +252,8 @@ function CustomCursor() {
               style={{
                 width: `${3 + i * 1.5}px`,
                 height: `${3 + i * 1.5}px`,
-                backgroundColor: "#00f5ff",
-                boxShadow: `0 0 ${6 + i * 3}px rgba(0, 245, 255, 0.8)`,
+                backgroundColor: `rgb(${colors.accent})`,
+                boxShadow: `0 0 ${6 + i * 3}px rgba(${colors.accent}, 0.8)`,
                 left: `${Math.cos((i * Math.PI * 2) / 4) * 20}px`,
                 top: `${Math.sin((i * Math.PI * 2) / 4) * 20}px`,
               }}
@@ -304,8 +307,8 @@ function CustomCursor() {
               style={{
                 width: "60px",
                 height: "60px",
-                borderColor: "#00f5ff",
-                boxShadow: "0 0 30px rgba(0, 245, 255, 0.6)",
+                borderColor: `rgb(${colors.accent})`,
+                boxShadow: `0 0 30px rgba(${colors.accent}, 0.6)`,
               }}
             />
           </div>

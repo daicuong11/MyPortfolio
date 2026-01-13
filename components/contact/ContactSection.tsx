@@ -25,9 +25,15 @@ function ContactSection() {
       {/* Cosmic Background */}
       <CosmicBackground intensity="strong" />
       
-      {/* cinematic lights */}
-      <div className="absolute -top-32 left-1/3 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[160px]" />
-      <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[160px]" />
+      {/* cinematic lights - themed */}
+      <div 
+        className="absolute -top-32 left-1/3 w-[500px] h-[500px] rounded-full blur-[160px]"
+        style={{ backgroundColor: `rgba(${colors.primary}, 0.2)` }}
+      />
+      <div 
+        className="absolute bottom-0 right-1/4 w-[500px] h-[500px] rounded-full blur-[160px]"
+        style={{ backgroundColor: `rgba(${colors.secondary}, 0.2)` }}
+      />
 
       <div className="relative max-w-5xl mx-auto text-center">
         <motion.h2

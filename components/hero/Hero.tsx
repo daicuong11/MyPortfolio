@@ -146,9 +146,24 @@ function Hero() {
       
       {/* Floating light orbs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-20 left-[20%] w-32 h-32 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-40 right-[15%] w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute bottom-32 left-[30%] w-36 h-36 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        <div 
+          className="absolute top-20 left-[20%] w-32 h-32 rounded-full blur-3xl animate-pulse"
+          style={{ backgroundColor: `rgba(${colors.secondary}, 0.2)` }}
+        />
+        <div 
+          className="absolute top-40 right-[15%] w-40 h-40 rounded-full blur-3xl animate-pulse"
+          style={{ 
+            backgroundColor: `rgba(${colors.primary}, 0.2)`,
+            animationDelay: '1s',
+          }}
+        />
+        <div 
+          className="absolute bottom-32 left-[30%] w-36 h-36 rounded-full blur-3xl animate-pulse"
+          style={{ 
+            backgroundColor: `rgba(${colors.accent}, 0.2)`,
+            animationDelay: '2s',
+          }}
+        />
       </div>
     </section>
   );
