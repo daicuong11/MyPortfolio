@@ -14,7 +14,7 @@ export default function ContactSection() {
   const cvFileName = locale === "vi"
     ? "cv/LyDaiCuong_CV_Vi.pdf"
     : "cv/LyDaiCuong_CV_En.pdf";
-  const cvFile = getPathWithBasePath(cvFileName, pathname);
+  const cvFile = getPathWithBasePath(cvFileName);
 
   return (
     <section className="relative py-40 px-6 bg-black overflow-hidden">

@@ -26,7 +26,7 @@ export default function Hero() {
   const cvFileName = locale === "vi" 
     ? "cv/LyDaiCuong_CV_Vi.pdf"
     : "cv/LyDaiCuong_CV_En.pdf";
-  const cvFile = getPathWithBasePath(cvFileName, pathname);
+  const cvFile = getPathWithBasePath(cvFileName);
 
   const switchLang = () => {
     if (isVI) {
