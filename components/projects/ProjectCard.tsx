@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import ProjectPreviewPopup from "./ProjectPreviewPopup";
@@ -30,6 +30,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const isHoveringPopupRef = useRef(false);
   const videoPreloadRef = useRef<HTMLVideoElement | null>(null);
+  const isOpeningRef = useRef(false); // Prevent multiple opens
 
   // Preload video when component mounts
   useEffect(() => {
@@ -49,111 +50,101 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     };
   }, [project.video]);
 
-  const handleThumbnailEnter = () => {
-    if (project.video) {
-      setIsHoveringThumbnail(true);
-      setIsLoading(true);
-      setProgress(0);
-      
-      // Clear any existing timeouts
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current);
-      }
-      if (closeTimeoutRef.current) {
-        clearTimeout(closeTimeoutRef.current);
-      }
-      if (progressIntervalRef.current) {
-        clearInterval(progressIntervalRef.current);
-      }
-
-      // Start progress bar animation (1.4s minimum)
-      const duration = 1400; // 1.4 seconds
-      const interval = 16; // ~60fps
-      const increment = (100 / duration) * interval;
-      
-      progressIntervalRef.current = setInterval(() => {
-        setProgress((prev) => {
-          const newProgress = prev + increment;
-          if (newProgress >= 100) {
-            if (progressIntervalRef.current) {
-              clearInterval(progressIntervalRef.current);
-              progressIntervalRef.current = null;
-            }
-            // Open preview when progress completes
-            setIsPreviewOpen(true);
-            setIsLoading(false);
-            return 100;
-          }
-          return newProgress;
-        });
-      }, interval);
-    }
-  };
-
-  const handleThumbnailLeave = () => {
-    setIsHoveringThumbnail(false);
-    setIsLoading(false);
-    setProgress(0);
-    
-    // Clear progress interval
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-      progressIntervalRef.current = null;
-    }
-    
+  const clearAllTimeouts = useCallback(() => {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
     }
-    
-    // Only close if not hovering popup - with longer delay to allow mouse to move to popup
-    // This gives user time to move mouse from thumbnail to popup (especially for edge cards)
-    if (!isHoveringPopupRef.current) {
-      closeTimeoutRef.current = setTimeout(() => {
-        // Final check before closing - only close if still not hovering popup
-        if (!isHoveringPopupRef.current) {
-          setIsPreviewOpen(false);
-        }
-      }, 800); // Increased delay to 800ms to give time to move mouse to popup
-    }
-  };
-
-  const handlePopupEnter = () => {
-    isHoveringPopupRef.current = true;
-    // Clear any pending close timeouts
     if (closeTimeoutRef.current) {
       clearTimeout(closeTimeoutRef.current);
       closeTimeoutRef.current = null;
     }
-    // Clear any pending open timeouts
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
+    if (progressIntervalRef.current) {
+      clearInterval(progressIntervalRef.current);
+      progressIntervalRef.current = null;
     }
-  };
+  }, []);
 
-  // Removed handlePopupLeave - popup will only close via Esc, close button, or leaving thumbnail
+  const handleThumbnailEnter = useCallback(() => {
+    // Prevent multiple opens
+    if (!project.video || isOpeningRef.current || isPreviewOpen) {
+      return;
+    }
 
-  const handleClose = () => {
+    setIsHoveringThumbnail(true);
+    setIsLoading(true);
+    setProgress(0);
+    isOpeningRef.current = true;
+    
+    // Clear any existing timeouts
+    clearAllTimeouts();
+
+    // Start progress bar animation (optimized with RAF)
+    const duration = 1200; // 1.2 seconds
+    const startTime = Date.now();
+      
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const newProgress = Math.min((elapsed / duration) * 100, 100);
+      
+      setProgress(newProgress);
+      
+      if (newProgress < 100) {
+        progressIntervalRef.current = setTimeout(() => {
+          animate();
+        }, 16) as any; // ~60fps
+      } else {
+        // Open preview when progress completes
+        setIsPreviewOpen(true);
+        setIsLoading(false);
+        isOpeningRef.current = false;
+      }
+    };
+    
+    animate();
+  }, [project.video, isPreviewOpen, clearAllTimeouts]);
+
+  const handleThumbnailLeave = useCallback(() => {
+    setIsHoveringThumbnail(false);
+    setIsLoading(false);
+    setProgress(0);
+    isOpeningRef.current = false;
+    
+    // Clear all timeouts
+    clearAllTimeouts();
+    
+    // Only close if not hovering popup
+    if (!isHoveringPopupRef.current) {
+      closeTimeoutRef.current = setTimeout(() => {
+        // Final check before closing
+        if (!isHoveringPopupRef.current) {
+          setIsPreviewOpen(false);
+        }
+      }, 600); // Reduced to 600ms for better responsiveness
+    }
+  }, [clearAllTimeouts]);
+
+  const handlePopupEnter = useCallback(() => {
+    isHoveringPopupRef.current = true;
+    clearAllTimeouts();
+  }, [clearAllTimeouts]);
+
+  const handleClose = useCallback(() => {
     setIsPreviewOpen(false);
     setIsHoveringThumbnail(false);
     setIsLoading(false);
     setProgress(0);
     isHoveringPopupRef.current = false;
-    
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-      hoverTimeoutRef.current = null;
-    }
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
-    }
-    if (progressIntervalRef.current) {
-      clearInterval(progressIntervalRef.current);
-      progressIntervalRef.current = null;
-    }
-  };
+    isOpeningRef.current = false;
+    clearAllTimeouts();
+  }, [clearAllTimeouts]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      clearAllTimeouts();
+    };
+  }, [clearAllTimeouts]);
 
   return (
     <>
