@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { Eye, Download, Languages } from "lucide-react";
 import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
+import { getPathWithBasePath } from "@/lib/paths";
 import CustomCursor from "./CustomCursor";
 
 const SpaceScene = dynamic(() => import("./SpaceScene"), {
@@ -22,10 +23,10 @@ export default function Hero() {
   const locale = getLocaleFromPath(pathname);
   const isVI = locale === "vi";
 
-  const cvFile =
-    locale === "vi"
-      ? "/cv/LyDaiCuong_CV_Vi.pdf"
-      : "/cv/LyDaiCuong_CV_En.pdf";
+  const cvFileName = locale === "vi" 
+    ? "cv/LyDaiCuong_CV_Vi.pdf"
+    : "cv/LyDaiCuong_CV_En.pdf";
+  const cvFile = getPathWithBasePath(cvFileName, pathname);
 
   const switchLang = () => {
     if (isVI) {
