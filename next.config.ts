@@ -6,8 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Required for static export
   },
-  // Uncomment and set basePath if your repo is NOT username.github.io
-  basePath: "/MyPortfolio", // Replace with your repo name
+  // Only use basePath in production (GitHub Pages)
+  // For local development, basePath will be empty
+  basePath: process.env.NODE_ENV === "production" ? "/MyPortfolio" : "",
   trailingSlash: true,
 };
 
