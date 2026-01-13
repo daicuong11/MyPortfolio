@@ -5,14 +5,16 @@ import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import { useTranslations } from "@/lib/i18n";
 import CosmicBackground from "@/components/shared/CosmicBackground";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 function ProjectsSection() {
   const t = useTranslations();
+  const { colors, getTitleGradient } = useThemeColors();
 
   return (
     <section className="relative py-32 px-6 bg-gradient-to-b from-[#050a1a] to-black overflow-hidden">
         {/* Cosmic Background */}
-        <CosmicBackground variant="purple" intensity="medium" />
+        <CosmicBackground intensity="medium" />
         
         {/* cinematic light blobs */}
         <div className="absolute -top-40 left-1/2 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[160px] -translate-x-1/2" />
@@ -24,7 +26,11 @@ function ProjectsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-4xl md:text-5xl font-extrabold text-center mb-20 leading-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(56,189,248,0.8)]"
+          className="text-4xl md:text-5xl font-extrabold text-center mb-20 leading-tight"
+          style={{
+            ...getTitleGradient(),
+            filter: `drop-shadow(0 0 20px rgba(${colors.primary}, 0.8))`,
+          }}
         >
           {t.projects.title}
         </motion.h2>

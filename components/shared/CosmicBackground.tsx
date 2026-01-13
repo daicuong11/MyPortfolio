@@ -2,28 +2,21 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 interface CosmicBackgroundProps {
-  variant?: "purple" | "cyan" | "blue" | "pink";
   intensity?: "light" | "medium" | "strong";
 }
 
 export default function CosmicBackground({ 
-  variant = "purple", 
   intensity = "medium" 
 }: CosmicBackgroundProps) {
   const [mounted, setMounted] = useState(false);
+  const { colors: themeColors } = useThemeColors();
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  const colorMap = {
-    purple: { primary: "139, 92, 246", secondary: "168, 85, 247", accent: "120, 119, 198" },
-    cyan: { primary: "6, 182, 212", secondary: "59, 130, 246", accent: "34, 211, 238" },
-    blue: { primary: "59, 130, 246", secondary: "99, 102, 241", accent: "147, 197, 253" },
-    pink: { primary: "236, 72, 153", secondary: "219, 39, 119", accent: "244, 114, 182" },
-  };
 
   const intensityMap = {
     light: 0.05,
@@ -31,7 +24,12 @@ export default function CosmicBackground({
     strong: 0.15,
   };
 
-  const colors = colorMap[variant];
+  // Use theme colors instead of hardcoded variants
+  const colors = {
+    primary: themeColors.primary,
+    secondary: themeColors.secondary,
+    accent: themeColors.accent,
+  };
   const opacityMultiplier = intensityMap[intensity];
 
   return (

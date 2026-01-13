@@ -7,6 +7,7 @@ import { Eye } from "lucide-react";
 import { useTranslations } from "@/lib/i18n";
 import ProjectPreviewPopup from "./ProjectPreviewPopup";
 import CircularProgress from "./CircularProgress";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 interface ProjectCardProps {
   project: {
@@ -24,6 +25,7 @@ interface ProjectCardProps {
 
 function ProjectCard({ project }: ProjectCardProps) {
   const t = useTranslations();
+  const { colors } = useThemeColors();
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isHoveringThumbnail, setIsHoveringThumbnail] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -135,11 +137,30 @@ function ProjectCard({ project }: ProjectCardProps) {
       <motion.div
         whileHover={{ y: -12, rotateX: 3, rotateY: -3 }}
         transition={{ type: "spring", stiffness: 300, damping: 20 }}
-        className="group relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-cyan-400/60 hover:shadow-[0_20px_60px_rgba(6,182,212,0.3)] transition-all duration-300"
-        style={{ transformStyle: "preserve-3d", willChange: "transform", transform: "translateZ(0)" }}
+        className="group relative rounded-2xl overflow-hidden backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 border transition-all duration-300"
+        style={{ 
+          transformStyle: "preserve-3d", 
+          willChange: "transform", 
+          transform: "translateZ(0)",
+          borderColor: `rgba(${colors.accent}, 0.1)`,
+          boxShadow: `0 20px 60px rgba(0,0,0,0.4)`,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+          e.currentTarget.style.boxShadow = `0 20px 60px rgba(${colors.primary}, 0.3)`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+          e.currentTarget.style.boxShadow = `0 20px 60px rgba(0,0,0,0.4)`;
+        }}
       >
         {/* Animated gradient overlay on card */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-purple-500/0 to-cyan-500/0 group-hover:from-cyan-500/5 group-hover:via-purple-500/5 group-hover:to-cyan-500/5 transition-all duration-500 rounded-2xl" />
+        <div 
+          className="absolute inset-0 transition-all duration-500 rounded-2xl opacity-0 group-hover:opacity-100"
+          style={{
+            backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0), rgba(${colors.secondary}, 0.05), rgba(${colors.primary}, 0.05))`,
+          }}
+        />
         
         {/* Background image with enhanced effects */}
         <div
@@ -159,11 +180,19 @@ function ProjectCard({ project }: ProjectCardProps) {
           
           {/* Multi-layer gradients for depth */}
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-transparent to-purple-500/0 group-hover:from-cyan-500/20 group-hover:to-purple-500/20 transition-all duration-500" />
+          <div 
+            className="absolute inset-0 transition-all duration-500 opacity-0 group-hover:opacity-100"
+            style={{
+              backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0), rgba(${colors.secondary}, 0.2))`,
+            }}
+          />
           
           {/* Animated scan line effect */}
           <motion.div
-            className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-400/30 to-transparent"
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(180deg, transparent, rgba(${colors.accent}, 0.3), transparent)`,
+            }}
             initial={{ y: "-100%" }}
             animate={{ y: "200%" }}
             transition={{ 
@@ -175,7 +204,12 @@ function ProjectCard({ project }: ProjectCardProps) {
           />
           
           {/* Corner accent */}
-          <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-cyan-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div 
+            className="absolute top-0 right-0 w-24 h-24 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.3), transparent)`,
+            }}
+          />
           
           {/* Hover indicator with progress bar */}
           {project.video && (
@@ -190,7 +224,8 @@ function ProjectCard({ project }: ProjectCardProps) {
                   <motion.span
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-cyan-300 text-xs font-medium"
+                    className="text-xs font-medium"
+                    style={{ color: `rgba(${colors.accent}, 0.9)` }}
                   >
                     {t.projects.loadingPreview}
                   </motion.span>
@@ -198,10 +233,14 @@ function ProjectCard({ project }: ProjectCardProps) {
               ) : (
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="flex flex-col items-center gap-2 backdrop-blur-md bg-gradient-to-br from-cyan-500/20 to-purple-500/20 px-6 py-3 rounded-2xl border border-cyan-400/50 shadow-lg"
+                  className="flex flex-col items-center gap-2 backdrop-blur-md px-6 py-3 rounded-2xl border shadow-lg"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                    borderColor: `rgba(${colors.accent}, 0.5)`,
+                  }}
                 >
-                  <Eye size={24} className="text-cyan-300" />
-                  <span className="text-cyan-300 text-sm font-semibold">
+                  <Eye size={24} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                  <span className="text-sm font-semibold" style={{ color: `rgba(${colors.accent}, 0.9)` }}>
                     {t.projects.previewProject}
                   </span>
                 </motion.div>
@@ -218,8 +257,19 @@ function ProjectCard({ project }: ProjectCardProps) {
         </div>
         
         <div className="flex items-start gap-2 mb-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 group-hover:animate-pulse" />
-          <h3 className="text-xl font-bold leading-tight bg-gradient-to-r from-cyan-300 via-blue-400 to-purple-400 bg-clip-text text-transparent group-hover:from-cyan-200 group-hover:to-purple-300 transition-all duration-300">
+          <div 
+            className="w-1.5 h-1.5 rounded-full mt-2 group-hover:animate-pulse" 
+            style={{ backgroundColor: `rgba(${colors.accent}, 1)` }}
+          />
+          <h3 
+            className="text-xl font-bold leading-tight transition-all duration-300"
+            style={{
+              backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 0.9), rgba(${colors.secondary}, 1), rgba(${colors.primary}, 0.9))`,
+              WebkitBackgroundClip: "text",
+              backgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+          >
             {project.title}
           </h3>
         </div>
@@ -238,7 +288,20 @@ function ProjectCard({ project }: ProjectCardProps) {
               viewport={{ once: true }}
               transition={{ delay: i * 0.05 }}
               whileHover={{ scale: 1.1, y: -2 }}
-              className="text-xs px-3 py-1.5 rounded-lg bg-gradient-to-r from-cyan-400/10 to-blue-400/10 text-cyan-300 border border-cyan-400/30 hover:border-cyan-400/60 hover:bg-cyan-400/20 transition-all duration-200 font-medium cursor-default"
+              className="text-xs px-3 py-1.5 rounded-lg border transition-all duration-200 font-medium cursor-default"
+              style={{
+                backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 0.1), rgba(${colors.secondary}, 0.1))`,
+                color: `rgba(${colors.accent}, 0.9)`,
+                borderColor: `rgba(${colors.accent}, 0.3)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                e.currentTarget.style.backgroundColor = `rgba(${colors.accent}, 0.2)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
             >
               {t}
             </motion.span>
@@ -253,7 +316,16 @@ function ProjectCard({ project }: ProjectCardProps) {
               target="_blank"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-semibold hover:from-cyan-400 hover:to-blue-400 transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl text-white font-semibold transition-all duration-300 shadow-lg cursor-pointer"
+              style={{
+                backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 1), rgba(${colors.secondary}, 1))`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.boxShadow = `0 10px 30px rgba(${colors.primary}, 0.5)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.boxShadow = "0 4px 6px rgba(0,0,0,0.3)";
+              }}
             >
               <FaGlobe size={14} /> 
               {project.demoLabel || "Demo"}
@@ -265,7 +337,18 @@ function ProjectCard({ project }: ProjectCardProps) {
               target="_blank"
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-white/10 text-white border border-white/20 hover:border-cyan-400/60 hover:bg-cyan-400/10 transition-all duration-300 font-medium cursor-pointer"
+              className="flex items-center gap-2 px-4 py-2 text-sm rounded-xl bg-white/10 text-white border transition-all duration-300 font-medium cursor-pointer"
+              style={{
+                borderColor: `rgba(${colors.accent}, 0.2)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                e.currentTarget.style.backgroundColor = `rgba(${colors.accent}, 0.1)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.2)`;
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)";
+              }}
             >
               <FaGithub size={14} /> 
               {project.codeLabel || "Code"}

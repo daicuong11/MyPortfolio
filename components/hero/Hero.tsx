@@ -14,6 +14,7 @@ import AutumnBackground from "./AutumnBackground";
 import WinterBackground from "./WinterBackground";
 import ThemeSelector from "@/components/shared/ThemeSelector";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 const SpaceScene = dynamic(() => import("./SpaceScene"), {
   ssr: false,
@@ -29,6 +30,7 @@ function Hero() {
   const locale = getLocaleFromPath(pathname);
   const isVI = locale === "vi";
   const { currentTheme } = useTheme();
+  const { colors, getTitleGradient } = useThemeColors();
 
   const cvFileName = locale === "vi" 
     ? "cv/LyDaiCuong_CV_Vi.pdf"
@@ -102,7 +104,11 @@ function Hero() {
       {/* Overlay content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
         <h1
-          className="text-5xl md:text-7xl font-extrabold leading-tight bg-gradient-to-r from-indigo-400 via-purple-500 to-fuchsia-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.9)] tracking-widest"
+          className="text-5xl md:text-7xl font-extrabold leading-tight tracking-widest"
+          style={{
+            ...getTitleGradient(),
+            filter: `drop-shadow(0 0 30px rgba(${colors.primary}, 0.9))`,
+          }}
         >
           {t.hero.title}
         </h1>

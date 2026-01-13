@@ -7,11 +7,13 @@ import { usePathname } from "next/navigation";
 import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
 import { getFileUrl } from "@/lib/paths";
 import CosmicBackground from "@/components/shared/CosmicBackground";
+import { useThemeColors } from "@/hooks/useThemeColors";
 
 function ContactSection() {
   const pathname = usePathname();
   const t = useTranslations();
   const locale = getLocaleFromPath(pathname);
+  const { colors, getTitleGradient } = useThemeColors();
 
   const cvFileName = locale === "vi"
     ? "cv/LyDaiCuong_CV_Vi.pdf"
@@ -21,7 +23,7 @@ function ContactSection() {
   return (
     <section className="relative py-40 px-6 bg-black overflow-hidden">
       {/* Cosmic Background */}
-      <CosmicBackground variant="blue" intensity="strong" />
+      <CosmicBackground intensity="strong" />
       
       {/* cinematic lights */}
       <div className="absolute -top-32 left-1/3 w-[500px] h-[500px] bg-cyan-500/20 rounded-full blur-[160px]" />
@@ -33,7 +35,11 @@ function ContactSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-4xl md:text-5xl font-extrabold mb-6 leading-normal bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl font-extrabold mb-6 leading-normal"
+          style={{
+            ...getTitleGradient(),
+            filter: `drop-shadow(0 0 20px rgba(${colors.primary}, 0.8))`,
+          }}
         >
           {t.contact.title}
         </motion.h2>
@@ -56,24 +62,52 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-cyan-400/60 backdrop-blur-xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(6,182,212,0.4)] cursor-pointer"
+              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: `rgba(${colors.accent}, 0.1)`,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                e.currentTarget.style.boxShadow = `0 8px 32px rgba(${colors.primary}, 0.4)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.3)";
+              }}
             >
               {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:to-purple-500/10 transition-all duration-500" />
+              <div 
+                className="absolute inset-0 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0), rgba(${colors.secondary}, 0.1))`,
+                }}
+              />
               
               {/* Content */}
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-500/20 border border-cyan-400/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                  <Mail className="text-cyan-300" size={24} />
+                <div 
+                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
+                    borderColor: `rgba(${colors.accent}, 0.3)`,
+                  }}
+                >
+                  <Mail style={{ color: `rgba(${colors.accent}, 0.9)` }} size={24} />
                 </div>
                 <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.email.label}</h3>
-                <p className="text-lg font-semibold text-white group-hover:text-cyan-300 transition-colors break-all">
+                <p className="text-lg font-semibold text-white transition-colors break-all group-hover:scale-105">
                   {t.contact.email.value}
                 </p>
               </div>
               
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-cyan-400/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div 
+                className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.2), transparent)`,
+                }}
+              />
             </motion.a>
 
             {/* GitHub Card */}
@@ -85,24 +119,52 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-purple-400/60 backdrop-blur-xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(168,85,247,0.4)]"
+              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: `rgba(${colors.accent}, 0.1)`,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.secondary}, 0.6)`;
+                e.currentTarget.style.boxShadow = `0 8px 32px rgba(${colors.secondary}, 0.4)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.3)";
+              }}
             >
               {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/10 group-hover:to-pink-500/10 transition-all duration-500" />
+              <div 
+                className="absolute inset-0 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.secondary}, 0), rgba(${colors.accent}, 0.1))`,
+                }}
+              />
               
               {/* Content */}
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500/20 to-pink-500/20 border border-purple-400/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                  <Github className="text-purple-300" size={24} />
+                <div 
+                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.secondary}, 0.2), rgba(${colors.accent}, 0.2))`,
+                    borderColor: `rgba(${colors.secondary}, 0.3)`,
+                  }}
+                >
+                  <Github style={{ color: `rgba(${colors.secondary}, 0.9)` }} size={24} />
                 </div>
                 <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.github.label}</h3>
-                <p className="text-lg font-semibold text-white group-hover:text-purple-300 transition-colors">
+                <p className="text-lg font-semibold text-white transition-colors">
                   {t.contact.github.value}
                 </p>
               </div>
               
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-400/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div 
+                className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.secondary}, 0.2), transparent)`,
+                }}
+              />
             </motion.a>
 
             {/* LinkedIn Card */}
@@ -114,24 +176,52 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-blue-400/60 backdrop-blur-xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(59,130,246,0.4)]"
+              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: `rgba(${colors.accent}, 0.1)`,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.primary}, 0.6)`;
+                e.currentTarget.style.boxShadow = `0 8px 32px rgba(${colors.primary}, 0.4)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.3)";
+              }}
             >
               {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/0 to-cyan-500/0 group-hover:from-blue-500/10 group-hover:to-cyan-500/10 transition-all duration-500" />
+              <div 
+                className="absolute inset-0 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0), rgba(${colors.accent}, 0.1))`,
+                }}
+              />
               
               {/* Content */}
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-400/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                  <Linkedin className="text-blue-300" size={24} />
+                <div 
+                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.accent}, 0.2))`,
+                    borderColor: `rgba(${colors.primary}, 0.3)`,
+                  }}
+                >
+                  <Linkedin style={{ color: `rgba(${colors.primary}, 0.9)` }} size={24} />
                 </div>
                 <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.linkedin.label}</h3>
-                <p className="text-lg font-semibold text-white group-hover:text-blue-300 transition-colors">
+                <p className="text-lg font-semibold text-white transition-colors">
                   {t.contact.linkedin.value}
                 </p>
               </div>
               
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-400/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div 
+                className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), transparent)`,
+                }}
+              />
             </motion.a>
 
             {/* CV Preview Card */}
@@ -143,24 +233,52 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 hover:border-green-400/60 backdrop-blur-xl transition-all duration-300 shadow-[0_8px_32px_rgba(0,0,0,0.3)] hover:shadow-[0_8px_32px_rgba(34,197,94,0.4)]"
+              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              style={{
+                borderColor: `rgba(${colors.accent}, 0.1)`,
+                boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+                e.currentTarget.style.boxShadow = `0 8px 32px rgba(${colors.accent}, 0.4)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.1)`;
+                e.currentTarget.style.boxShadow = "0 8px 32px rgba(0,0,0,0.3)";
+              }}
             >
               {/* Glow effect */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-green-500/0 to-emerald-500/0 group-hover:from-green-500/10 group-hover:to-emerald-500/10 transition-all duration-500" />
+              <div 
+                className="absolute inset-0 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0), rgba(${colors.primary}, 0.1))`,
+                }}
+              />
               
               {/* Content */}
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 border border-green-400/30 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
-                  <Eye className="text-green-300" size={24} />
+                <div 
+                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.2), rgba(${colors.primary}, 0.2))`,
+                    borderColor: `rgba(${colors.accent}, 0.3)`,
+                  }}
+                >
+                  <Eye style={{ color: `rgba(${colors.accent}, 0.9)` }} size={24} />
                 </div>
                 <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.previewCV.label}</h3>
-                <p className="text-lg font-semibold text-white group-hover:text-green-300 transition-colors">
+                <p className="text-lg font-semibold text-white transition-colors">
                   {t.contact.previewCV.value}
                 </p>
               </div>
               
               {/* Corner accent */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-400/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div 
+                className="absolute top-0 right-0 w-20 h-20 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.2), transparent)`,
+                }}
+              />
             </motion.a>
           </div>
 
@@ -174,11 +292,27 @@ function ContactSection() {
             transition={{ delay: 0.6 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="group relative block p-8 rounded-2xl bg-gradient-to-r from-cyan-500/20 via-purple-500/20 to-cyan-500/20 border-2 border-cyan-400/40 hover:border-cyan-400/80 backdrop-blur-xl transition-all duration-300 shadow-[0_8px_32px_rgba(6,182,212,0.3)] hover:shadow-[0_12px_48px_rgba(6,182,212,0.5)] overflow-hidden cursor-pointer"
+            className="group relative block p-8 rounded-2xl border-2 backdrop-blur-xl transition-all duration-300 overflow-hidden cursor-pointer"
+            style={{
+              backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2), rgba(${colors.primary}, 0.2))`,
+              borderColor: `rgba(${colors.accent}, 0.4)`,
+              boxShadow: `0 8px 32px rgba(${colors.primary}, 0.3)`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.8)`;
+              e.currentTarget.style.boxShadow = `0 12px 48px rgba(${colors.primary}, 0.5)`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.4)`;
+              e.currentTarget.style.boxShadow = `0 8px 32px rgba(${colors.primary}, 0.3)`;
+            }}
           >
             {/* Animated background */}
             <motion.div 
-              className="absolute inset-0 bg-gradient-to-r from-cyan-500/0 via-cyan-500/20 to-cyan-500/0"
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0), rgba(${colors.primary}, 0.2), rgba(${colors.primary}, 0))`,
+              }}
               animate={{ x: ["-100%", "100%"] }}
               transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
             />
@@ -186,14 +320,22 @@ function ContactSection() {
             {/* Content */}
             <div className="relative z-10 flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg">
+                <div 
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 1), rgba(${colors.secondary}, 1))`,
+                  }}
+                >
                   <Download className="text-white" size={28} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-medium text-cyan-300 mb-1 uppercase tracking-wider">
+                  <h3 
+                    className="text-sm font-medium mb-1 uppercase tracking-wider"
+                    style={{ color: `rgba(${colors.accent}, 0.9)` }}
+                  >
                     {t.contact.downloadCV.label}
                   </h3>
-                  <p className="text-2xl font-bold text-white group-hover:text-cyan-200 transition-colors">
+                  <p className="text-2xl font-bold text-white transition-colors">
                     {t.contact.downloadCV.value}
                   </p>
                 </div>
@@ -203,7 +345,8 @@ function ContactSection() {
               <motion.div
                 animate={{ x: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="text-cyan-300 opacity-0 group-hover:opacity-100 transition-opacity"
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ color: `rgba(${colors.accent}, 0.9)` }}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7"/>
