@@ -7,6 +7,7 @@ import { Eye, Download, Languages } from "lucide-react";
 import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
 import { getFileUrl } from "@/lib/paths";
 import CustomCursor from "./CustomCursor";
+import AuroraBackground from "./AuroraBackground";
 
 const SpaceScene = dynamic(() => import("./SpaceScene"), {
   ssr: false,
@@ -40,15 +41,21 @@ function Hero() {
       {/* Custom Cursor */}
       <CustomCursor />
       
-      {/* 3D Background */}
+      {/* Enhanced Background Layers */}
       <div className="absolute inset-0">
         <SpaceScene />
+        <AuroraBackground />
       </div>
 
       {/* Language Switch */}
       <button
         onClick={switchLang}
-        className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-md bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
+        className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
+        style={{ 
+          cursor: 'pointer',
+          pointerEvents: 'auto',
+          isolation: 'isolate'
+        }}
       >
         <Languages size={14} />
         {locale === "vi" ? "EN" : "VI"}
@@ -90,8 +97,15 @@ function Hero() {
         </div>
       </div>
 
-      {/* Subtle bottom glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/10 blur-[120px] will-change-transform" />
+      {/* Enhanced bottom glow with gradient */}
+      <div className="absolute bottom-0 left-0 right-0 h-[300px] bg-gradient-to-t from-purple-900/20 via-cyan-500/10 to-transparent blur-[80px] will-change-transform" />
+      
+      {/* Floating light orbs */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-20 left-[20%] w-32 h-32 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-40 right-[15%] w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+        <div className="absolute bottom-32 left-[30%] w-36 h-36 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      </div>
     </section>
   );
 }

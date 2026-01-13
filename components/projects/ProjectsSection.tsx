@@ -4,12 +4,16 @@ import { memo } from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import { useTranslations } from "@/lib/i18n";
+import CosmicBackground from "@/components/shared/CosmicBackground";
 
 function ProjectsSection() {
   const t = useTranslations();
 
   return (
     <section className="relative py-32 px-6 bg-gradient-to-b from-[#050a1a] to-black overflow-hidden">
+        {/* Cosmic Background */}
+        <CosmicBackground variant="purple" intensity="medium" />
+        
         {/* cinematic light blobs */}
         <div className="absolute -top-40 left-1/2 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[160px] -translate-x-1/2" />
         <div className="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[160px]" />

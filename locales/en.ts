@@ -101,6 +101,12 @@ const en = {
       code: "Code",
     },
     previewTip: "Press Esc to exit",
+    loadingVideo: "Loading video...",
+    loadingPreview: "Loading Preview...",
+    previewProject: "Preview Project",
+    status: {
+      active: "ACTIVE",
+    },
   },
 
   // Contact Section
@@ -134,6 +140,21 @@ const en = {
   // Footer
   footer: {
     name: "Ly Dai Cuong",
+    description: "Building innovative solutions with modern technologies. Passionate about creating exceptional digital experiences.",
+    quickLinks: {
+      title: "Quick Links",
+      projects: "Projects",
+      skills: "Skills",
+      contact: "Contact",
+    },
+    builtWith: {
+      title: "Built With",
+      techs: ["Next.js", "React", "TypeScript", "Tailwind", "Three.js", "Framer Motion"],
+    },
+    status: {
+      online: "ONLINE",
+    },
+    backToTop: "Back to Top",
     techSignature: "Built with Next.js • Three.js • Framer Motion",
     copyright: `© ${new Date().getFullYear()} Ly Dai Cuong. All rights reserved.`,
   },

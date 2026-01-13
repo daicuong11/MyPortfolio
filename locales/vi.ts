@@ -101,11 +101,17 @@ const vi = {
       code: "Code",
     },
     previewTip: "Nhấn Esc để thoát",
+    loadingVideo: "Đang tải video...",
+    loadingPreview: "Đang tải xem trước...",
+    previewProject: "Xem trước dự án",
+    status: {
+      active: "HOẠT ĐỘNG",
+    },
   },
 
   // Contact Section
   contact: {
-    title: "Hãy cùng xây dựng điều gì đó phi thường",
+    title: "Cùng tạo nên điều phi thường",
     email: {
       label: "Email",
       value: "lydaicuong.dev@gmail.com",
@@ -134,6 +140,21 @@ const vi = {
   // Footer
   footer: {
     name: "Ly Dai Cuong",
+    description: "Xây dựng các giải pháp sáng tạo với công nghệ hiện đại. Đam mê tạo ra những trải nghiệm số xuất sắc.",
+    quickLinks: {
+      title: "Liên kết nhanh",
+      projects: "Dự án",
+      skills: "Kỹ năng",
+      contact: "Liên hệ",
+    },
+    builtWith: {
+      title: "Công nghệ sử dụng",
+      techs: ["Next.js", "React", "TypeScript", "Tailwind", "Three.js", "Framer Motion"],
+    },
+    status: {
+      online: "TRỰC TUYẾN",
+    },
+    backToTop: "Về đầu trang",
     techSignature: "Xây dựng với Next.js • Three.js • Framer Motion",
     copyright: `© ${new Date().getFullYear()} Ly Dai Cuong. Bảo lưu mọi quyền.`,
   },
