@@ -6,9 +6,9 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Required for static export
   },
-  // Only use basePath in production (GitHub Pages)
+  // Only use basePath when building for GitHub Pages
   // For local development, basePath will be empty
-  basePath: process.env.NODE_ENV === "production" ? "/MyPortfolio" : "",
+  basePath: process.env.GITHUB_PAGES === "true" ? "/MyPortfolio" : "",
   trailingSlash: true,
 };
 
