@@ -1,31 +1,32 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
-export default function CustomCursor() {
+function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
+  const [isScrolling, setIsScrolling] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
   
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
   
-  // Tăng stiffness và giảm damping để phản ứng nhanh hơn, ít delay hơn
-  const springConfig = { damping: 20, stiffness: 1200, mass: 0.5 };
+  const springConfig = { damping: 25, stiffness: 800, mass: 0.3 };
   const cursorXSpring = useSpring(cursorX, springConfig);
   const cursorYSpring = useSpring(cursorY, springConfig);
 
   useEffect(() => {
-    // Find hero section
     heroRef.current = document.querySelector(".hero-cursor-area");
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Update position ngay lập tức với spring animation mượt mà
+      // Skip update when scrolling for performance
+      if (isScrolling) return;
+      
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       
-      // Check if mouse is over hero section
       if (heroRef.current) {
         const rect = heroRef.current.getBoundingClientRect();
         const isInHero = 
@@ -36,7 +37,6 @@ export default function CustomCursor() {
         
         setIsVisible(isInHero);
         
-        // Check if hovering over interactive elements
         const target = e.target;
         if (target && target instanceof HTMLElement) {
           const isInteractive = Boolean(
@@ -48,6 +48,17 @@ export default function CustomCursor() {
           setIsHovering(isInteractive);
         }
       }
+    };
+
+    const handleScroll = () => {
+      setIsScrolling(true);
+      setIsVisible(false);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        setIsScrolling(false);
+      }, 100);
     };
 
     const handleMouseEnter = (e: MouseEvent) => {
@@ -64,16 +75,21 @@ export default function CustomCursor() {
       }
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     document.addEventListener("mouseenter", handleMouseEnter, true);
     document.addEventListener("mouseleave", handleMouseLeave, true);
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mouseenter", handleMouseEnter, true);
       document.removeEventListener("mouseleave", handleMouseLeave, true);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isScrolling]);
 
   if (!isVisible) return null;
 
@@ -298,3 +314,5 @@ export default function CustomCursor() {
     </>
   );
 }
+
+export default memo(CustomCursor);

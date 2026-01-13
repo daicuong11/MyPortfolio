@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import dynamic from "next/dynamic";
 import { usePathname, useRouter } from "next/navigation";
 import { Eye, Download, Languages } from "lucide-react";
@@ -10,13 +11,11 @@ import CustomCursor from "./CustomCursor";
 const SpaceScene = dynamic(() => import("./SpaceScene"), {
   ssr: false,
   loading: () => (
-    <div className="absolute inset-0 bg-black flex items-center justify-center">
-      <span className="text-gray-500">Loading space...</span>
-    </div>
+    <div className="absolute inset-0 bg-[#02040f]" />
   ),
 });
 
-export default function Hero() {
+function Hero() {
   const pathname = usePathname();
   const router = useRouter();
   const t = useTranslations();
@@ -92,7 +91,9 @@ export default function Hero() {
       </div>
 
       {/* Subtle bottom glow */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/10 blur-[120px]" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-cyan-500/10 blur-[120px] will-change-transform" />
     </section>
   );
 }
+
+export default memo(Hero);
