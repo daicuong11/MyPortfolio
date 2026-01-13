@@ -1,9 +1,10 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "@/lib/i18n";
 
-export default function SkillsSection() {
+function SkillsSection() {
   const t = useTranslations();
 
   return (
@@ -16,8 +17,8 @@ export default function SkillsSection() {
       <motion.h2
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
+        viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="text-4xl md:text-5xl font-extrabold text-center mb-20 leading-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(56,189,248,0.8)]"
         >
         {t.skills.title}
@@ -31,9 +32,9 @@ export default function SkillsSection() {
               key={group.title}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-cyan-400/40 transition"
+              viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
+              transition={{ delay: idx * 0.08, duration: 0.5, ease: "easeOut" }}
+              className="backdrop-blur-lg bg-white/5 border border-white/10 rounded-2xl p-6 hover:border-cyan-400/40 transition will-change-transform"
             >
               <h3 className="text-xl font-semibold mb-4 leading-normal bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
                 {group.title}
@@ -61,3 +62,5 @@ export default function SkillsSection() {
     </section>
   );
 }
+
+export default memo(SkillsSection);

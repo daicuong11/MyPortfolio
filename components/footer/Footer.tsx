@@ -1,9 +1,10 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { useTranslations } from "@/lib/i18n";
 
-export default function Footer() {
+function Footer() {
   const t = useTranslations();
 
   return (
@@ -74,9 +75,9 @@ export default function Footer() {
         />
       </div>
 
-      {/* Subtle particles glow */}
+      {/* Subtle particles glow - Reduced from 8 to 4 for performance */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <motion.div
             key={i}
             initial={{ opacity: 0.1, y: 0 }}
@@ -89,10 +90,10 @@ export default function Footer() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="absolute w-2 h-2 rounded-full bg-cyan-400/30 blur-md"
+            className="absolute w-2 h-2 rounded-full bg-cyan-400/30 blur-md will-change-transform"
             style={{
-              left: `${10 + i * 12}%`,
-              bottom: `${10 + (i % 3) * 20}%`,
+              left: `${15 + i * 20}%`,
+              bottom: `${15 + (i % 2) * 30}%`,
             }}
           />
         ))}
@@ -106,8 +107,8 @@ export default function Footer() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1 }}
+        viewport={{ once: true, amount: 0.5, margin: "0px 0px -50px 0px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative z-10 max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between px-6 gap-4"
       >
         {/* Glowing Name Logo */}
@@ -130,3 +131,5 @@ export default function Footer() {
     </footer>
   );
 }
+
+export default memo(Footer);

@@ -1,10 +1,11 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import { useTranslations } from "@/lib/i18n";
 
-export default function ProjectsSection() {
+function ProjectsSection() {
   const t = useTranslations();
 
   return (
@@ -17,8 +18,8 @@ export default function ProjectsSection() {
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-4xl md:text-5xl font-extrabold text-center mb-20 leading-tight bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(56,189,248,0.8)]"
         >
           {t.projects.title}
@@ -30,8 +31,8 @@ export default function ProjectsSection() {
               key={p.title}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              viewport={{ once: true, amount: 0.2, margin: "0px 0px -50px 0px" }}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: "easeOut" }}
             >
               <ProjectCard 
                 project={{
@@ -47,3 +48,5 @@ export default function ProjectsSection() {
     </section>
   );
 }
+
+export default memo(ProjectsSection);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, memo } from "react";
 import { motion } from "framer-motion";
 import { FaGithub, FaGlobe } from "react-icons/fa";
 import ProjectPreviewPopup from "./ProjectPreviewPopup";
@@ -20,7 +20,7 @@ interface ProjectCardProps {
   };
 }
 
-export default function ProjectCard({ project }: ProjectCardProps) {
+function ProjectCard({ project }: ProjectCardProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isHoveringThumbnail, setIsHoveringThumbnail] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -131,9 +131,9 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     <>
       <motion.div
         whileHover={{ y: -8, rotateX: 2, rotateY: -2 }}
-        transition={{ type: "spring", stiffness: 200, damping: 15 }}
-        className="group relative rounded-2xl overflow-hidden backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-cyan-400/40 hover:shadow-cyan-500/20 transform-gpu"
-        style={{ transformStyle: "preserve-3d", willChange: "transform" }}
+        transition={{ type: "spring", stiffness: 250, damping: 18 }}
+        className="group relative rounded-2xl overflow-hidden backdrop-blur-xl bg-white/5 border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.5)] hover:border-cyan-400/40 hover:shadow-cyan-500/20"
+        style={{ transformStyle: "preserve-3d", willChange: "transform", transform: "translateZ(0)" }}
       >
         {/* Background image */}
         <div
@@ -213,3 +213,5 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     </>
   );
 }
+
+export default memo(ProjectCard);

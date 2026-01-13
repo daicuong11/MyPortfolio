@@ -1,12 +1,13 @@
 "use client";
 
+import { memo } from "react";
 import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Download, Eye } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
 import { getFileUrl } from "@/lib/paths";
 
-export default function ContactSection() {
+function ContactSection() {
   const pathname = usePathname();
   const t = useTranslations();
   const locale = getLocaleFromPath(pathname);
@@ -26,8 +27,8 @@ export default function ContactSection() {
         <motion.h2
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, amount: 0.3, margin: "0px 0px -100px 0px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
           className="text-4xl md:text-5xl font-extrabold mb-6 leading-normal bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent"
         >
           {t.contact.title}
@@ -36,8 +37,8 @@ export default function ContactSection() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
+          viewport={{ once: true, amount: 0.3, margin: "0px 0px -50px 0px" }}
+          transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
           className="mx-auto max-w-xl backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-10"
         >
           <div className="space-y-6 text-left">
@@ -116,3 +117,5 @@ function ContactItem({
     </a>
   );
 }
+
+export default memo(ContactSection);
