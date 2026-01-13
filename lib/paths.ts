@@ -1,25 +1,12 @@
 /**
  * Get the base path for GitHub Pages
- * This handles both local development (no basePath) and GitHub Pages (with basePath)
+ * This must match the basePath in next.config.ts
+ * Uses environment variable to avoid hydration mismatch
  */
 export function getBasePath(): string {
-  // Check if we're running on GitHub Pages (production)
-  if (typeof window !== "undefined") {
-    const hostname = window.location.hostname;
-    const pathname = window.location.pathname;
-    
-    // If hostname is github.io, we're on GitHub Pages and need basePath
-    if (hostname.includes("github.io")) {
-      return "/MyPortfolio";
-    }
-    
-    // Fallback: check if pathname already includes MyPortfolio
-    if (pathname.startsWith("/MyPortfolio")) {
-      return "/MyPortfolio";
-    }
-  }
-  // Local development - no basePath
-  return "";
+  // Use the same logic as next.config.ts
+  // In production build (GitHub Pages), NEXT_PUBLIC_BASE_PATH will be set
+  return process.env.NEXT_PUBLIC_BASE_PATH || "";
 }
 
 /**
@@ -35,20 +22,13 @@ export function getPathWithBasePath(path: string): string {
 }
 
 /**
- * Get full URL for file access (for use in href)
- * This ensures the correct path for static files like PDFs
+ * Get file URL for static files (PDFs, images, etc.)
+ * Always returns relative path to avoid hydration mismatch
  */
 export function getFileUrl(path: string): string {
-  if (typeof window === "undefined") {
-    // Server-side: just return the path with basePath
-    return getPathWithBasePath(path);
-  }
-  
-  // Client-side: construct full URL
+  // Always return relative path (works for both SSR and client)
+  // Browser will resolve relative paths correctly
   const basePath = getBasePath();
   const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-  const fullPath = basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`;
-  
-  // Return full URL with origin
-  return `${window.location.origin}${fullPath}`;
+  return basePath ? `${basePath}/${cleanPath}` : `/${cleanPath}`;
 }
