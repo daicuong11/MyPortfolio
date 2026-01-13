@@ -26,9 +26,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const isHoveringPopupRef = useRef(false);
   const videoPreloadRef = useRef<HTMLVideoElement | null>(null);
   const isOpeningRef = useRef(false); // Prevent multiple opens
 
@@ -54,10 +52,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     if (hoverTimeoutRef.current) {
       clearTimeout(hoverTimeoutRef.current);
       hoverTimeoutRef.current = null;
-    }
-    if (closeTimeoutRef.current) {
-      clearTimeout(closeTimeoutRef.current);
-      closeTimeoutRef.current = null;
     }
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
@@ -113,20 +107,8 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     // Clear all timeouts
     clearAllTimeouts();
     
-    // Only close if not hovering popup
-    if (!isHoveringPopupRef.current) {
-      closeTimeoutRef.current = setTimeout(() => {
-        // Final check before closing
-        if (!isHoveringPopupRef.current) {
-          setIsPreviewOpen(false);
-        }
-      }, 600); // Reduced to 600ms for better responsiveness
-    }
-  }, [clearAllTimeouts]);
-
-  const handlePopupEnter = useCallback(() => {
-    isHoveringPopupRef.current = true;
-    clearAllTimeouts();
+    // DO NOT close popup on hover leave
+    // Popup will only close via Esc key or close button
   }, [clearAllTimeouts]);
 
   const handleClose = useCallback(() => {
@@ -134,7 +116,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
     setIsHoveringThumbnail(false);
     setIsLoading(false);
     setProgress(0);
-    isHoveringPopupRef.current = false;
     isOpeningRef.current = false;
     clearAllTimeouts();
   }, [clearAllTimeouts]);
@@ -226,7 +207,6 @@ export default function ProjectCard({ project }: ProjectCardProps) {
           onClose={handleClose}
           videoUrl={project.video}
           title={project.title}
-          onMouseEnter={handlePopupEnter}
         />
       )}
     </motion.div>

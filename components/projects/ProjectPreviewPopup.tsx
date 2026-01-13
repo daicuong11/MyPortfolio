@@ -11,7 +11,6 @@ interface ProjectPreviewPopupProps {
   onClose: () => void;
   videoUrl: string;
   title: string;
-  onMouseEnter?: () => void;
 }
 
 export default function ProjectPreviewPopup({
@@ -19,7 +18,6 @@ export default function ProjectPreviewPopup({
   onClose,
   videoUrl,
   title,
-  onMouseEnter,
 }: ProjectPreviewPopupProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const popupRef = useRef<HTMLDivElement>(null);
@@ -77,7 +75,6 @@ export default function ProjectPreviewPopup({
           {/* Popup Container */}
           <div 
             className="fixed inset-0 z-[10000] flex items-center justify-center p-4 pointer-events-none"
-            onMouseEnter={onMouseEnter}
           >
             <motion.div
               ref={popupRef}
