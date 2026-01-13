@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Mail, Github, Linkedin, Download, Eye } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
-import { getPathWithBasePath } from "@/lib/paths";
+import { getFileUrl } from "@/lib/paths";
 
 export default function ContactSection() {
   const pathname = usePathname();
@@ -14,7 +14,7 @@ export default function ContactSection() {
   const cvFileName = locale === "vi"
     ? "cv/LyDaiCuong_CV_Vi.pdf"
     : "cv/LyDaiCuong_CV_En.pdf";
-  const cvFile = getPathWithBasePath(cvFileName);
+  const cvFile = getFileUrl(cvFileName);
 
   return (
     <section className="relative py-40 px-6 bg-black overflow-hidden">
