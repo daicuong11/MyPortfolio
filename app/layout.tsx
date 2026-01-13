@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { getTranslations } from "@/lib/i18n";
+import ClientProviders from "@/components/providers/ClientProviders";
 
 export const metadata: Metadata = {
   title: {
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="bg-black text-white overflow-x-hidden">
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

@@ -8,6 +8,12 @@ import { useTranslations, getLocaleFromPath } from "@/lib/i18n";
 import { getFileUrl } from "@/lib/paths";
 import CustomCursor from "./CustomCursor";
 import AuroraBackground from "./AuroraBackground";
+import SpringBackground from "./SpringBackground";
+import SummerBackground from "./SummerBackground";
+import AutumnBackground from "./AutumnBackground";
+import WinterBackground from "./WinterBackground";
+import ThemeSelector from "@/components/shared/ThemeSelector";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const SpaceScene = dynamic(() => import("./SpaceScene"), {
   ssr: false,
@@ -22,6 +28,7 @@ function Hero() {
   const t = useTranslations();
   const locale = getLocaleFromPath(pathname);
   const isVI = locale === "vi";
+  const { currentTheme } = useTheme();
 
   const cvFileName = locale === "vi" 
     ? "cv/LyDaiCuong_CV_Vi.pdf"
@@ -41,11 +48,42 @@ function Hero() {
       {/* Custom Cursor */}
       <CustomCursor />
       
-      {/* Enhanced Background Layers */}
+      {/* Enhanced Background Layers - Theme Based */}
       <div className="absolute inset-0">
-        <SpaceScene />
-        <AuroraBackground />
+        {currentTheme === "space" && (
+          <>
+            <SpaceScene />
+            <AuroraBackground />
+          </>
+        )}
+        {currentTheme === "spring" && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-pink-950 via-pink-900/50 to-black" />
+            <SpringBackground />
+          </>
+        )}
+        {currentTheme === "summer" && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-yellow-950 via-orange-900/50 to-black" />
+            <SummerBackground />
+          </>
+        )}
+        {currentTheme === "autumn" && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-orange-950 via-amber-900/50 to-black" />
+            <AutumnBackground />
+          </>
+        )}
+        {currentTheme === "winter" && (
+          <>
+            <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-cyan-900/50 to-black" />
+            <WinterBackground />
+          </>
+        )}
       </div>
+
+      {/* Theme Selector */}
+      <ThemeSelector />
 
       {/* Language Switch */}
       <button

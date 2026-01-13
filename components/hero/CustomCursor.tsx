@@ -97,7 +97,7 @@ function CustomCursor() {
     <>
       {/* Main cursor - Outer glow ring with crosshair */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999]"
+        className="pointer-events-none fixed top-0 left-0 z-[100000]"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -235,7 +235,7 @@ function CustomCursor() {
 
       {/* Particle trail effect */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9998]"
+        className="pointer-events-none fixed top-0 left-0 z-[99999]"
         style={{
           x: cursorXSpring,
           y: cursorYSpring,
@@ -282,7 +282,7 @@ function CustomCursor() {
       {/* Hover effect - expanding ring */}
       {isHovering && (
         <motion.div
-          className="pointer-events-none fixed top-0 left-0 z-[9997]"
+          className="pointer-events-none fixed top-0 left-0 z-[99998]"
           style={{
             x: cursorXSpring,
             y: cursorYSpring,
