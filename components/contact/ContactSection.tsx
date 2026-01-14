@@ -372,10 +372,12 @@ function ContactSection() {
             {[...Array(3)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 rounded-full bg-cyan-400/60"
+                className="absolute w-2 h-2 rounded-full"
                 style={{
                   left: `${20 + i * 30}%`,
                   top: `${30 + i * 20}%`,
+                  background: `rgba(${colors.accent}, 0.6)`,
+                  boxShadow: `0 0 10px rgba(${colors.accent}, 0.4)`,
                 }}
                 animate={{
                   y: [0, -20, 0],
