@@ -124,14 +124,14 @@ export default function SpaceScene() {
           <Stars
             radius={120}
             depth={60}
-            count={3000}
+            count={2000}
             factor={4}
             saturation={0}
             fade
             speed={0.5}
           />
 
-          <AINetwork count={15} />
+          <AINetwork count={12} />
 
           <CameraRig />
 

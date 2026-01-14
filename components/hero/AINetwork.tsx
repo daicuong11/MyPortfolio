@@ -3,7 +3,7 @@
 import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Html, RoundedBox } from "@react-three/drei";
+import { Html } from "@react-three/drei";
 import { IconType } from "react-icons";
 import { 
   SiReact, 
@@ -175,7 +175,7 @@ export default function AINetwork({ count = 40 }) {
       });
     });
 
-    // Update node groups với scale effect và rotation
+    // Update node groups with optimized animations
     nodesRef.current.forEach((group, i) => {
       if (group) {
         group.position.copy(nodes[i].position);
@@ -183,22 +183,11 @@ export default function AINetwork({ count = 40 }) {
         // Scale effect khi hover hoặc click
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
-        const targetScale = isClicked ? 1.4 : isHovered ? 1.2 : 1;
-        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+        const targetScale = isClicked ? 1.3 : isHovered ? 1.15 : 1;
+        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
         
-        // Subtle floating animation - cards face camera
-        group.rotation.y = Math.sin(state.clock.elapsedTime * 0.3 + i) * 0.1;
-        group.rotation.x = Math.cos(state.clock.elapsedTime * 0.2 + i) * 0.05;
-        
-        // Rotate particles and ring when active
-        if (isHovered || isClicked) {
-          // Find and rotate the torus (ring)
-          group.children.forEach((child) => {
-            if (child instanceof THREE.Mesh && child.geometry instanceof THREE.TorusGeometry) {
-              child.rotation.z += 0.02;
-            }
-          });
-        }
+        // Face camera for better visibility
+        group.lookAt(state.camera.position);
       }
     });
 
@@ -221,7 +210,7 @@ export default function AINetwork({ count = 40 }) {
 
   return (
     <group>
-      {/* Tech Cards - 3D Glass Morphism Style */}
+      {/* Tech Cards - Optimized Simple Design */}
       {nodes.map((node, i) => {
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
@@ -235,23 +224,8 @@ export default function AINetwork({ count = 40 }) {
               if (el) nodesRef.current[i] = el;
             }}
           >
-            {/* Background glow sphere khi hover */}
-            {isActive && (
-              <mesh>
-                <sphereGeometry args={[0.5, 32, 32]} />
-                <meshBasicMaterial
-                  color={node.tech.color}
-                  transparent
-                  opacity={0.15}
-                />
-              </mesh>
-            )}
-
-            {/* Main Card - RoundedBox with glass effect */}
-            <RoundedBox
-              args={[0.5, 0.5, 0.08]}
-              radius={0.05}
-              smoothness={4}
+            {/* Simple Card Background */}
+            <mesh
               onPointerEnter={(e) => {
                 e.stopPropagation();
                 setHoveredIndex(i);
@@ -272,159 +246,49 @@ export default function AINetwork({ count = 40 }) {
                   clickedNodeRef.current = i;
                   setTimeout(() => {
                     clickedNodeRef.current = null;
-                  }, 1500);
+                  }, 1000);
                 }
               }}
             >
-              <meshPhysicalMaterial
+              <circleGeometry args={[0.25, 32]} />
+              <meshStandardMaterial
                 color={isActive ? node.tech.color : "#1a1a2e"}
                 emissive={node.tech.color}
-                emissiveIntensity={isActive ? 0.6 : 0.2}
+                emissiveIntensity={isActive ? 0.8 : 0.3}
                 transparent
-                opacity={isActive ? 0.9 : 0.7}
-                metalness={0.2}
-                roughness={0.3}
-                clearcoat={1}
-                clearcoatRoughness={0.2}
-                transmission={0.1}
-                thickness={0.5}
+                opacity={isActive ? 0.9 : 0.6}
               />
-            </RoundedBox>
+            </mesh>
 
-            {/* Card border/outline */}
-            <RoundedBox
-              args={[0.52, 0.52, 0.09]}
-              radius={0.05}
-              smoothness={4}
-            >
+            {/* Glow ring */}
+            <mesh>
+              <ringGeometry args={[0.25, 0.28, 32]} />
               <meshBasicMaterial
                 color={node.tech.color}
                 transparent
                 opacity={isActive ? 0.6 : 0.2}
-                wireframe
               />
-            </RoundedBox>
+            </mesh>
 
-            {/* Tech Icon - HTML Overlay */}
+            {/* Tech Icon - Optimized HTML */}
             <Html
               center
-              distanceFactor={6}
-              position={[0, 0, 0.05]}
+              distanceFactor={8}
+              position={[0, 0, 0.02]}
               style={{
                 pointerEvents: "none",
                 userSelect: "none",
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
-              <div
+              <Icon
+                size={isActive ? 36 : 28}
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "4px",
-                  transform: isActive ? "scale(1.2)" : "scale(1)",
-                  transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                  color: isActive ? "#ffffff" : node.tech.color,
+                  filter: `drop-shadow(0 0 ${isActive ? "8px" : "4px"} ${node.tech.color})`,
+                  transition: "all 0.2s ease",
                 }}
-              >
-                {/* Icon Container */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    width: "48px",
-                    height: "48px",
-                    borderRadius: "12px",
-                    backgroundColor: isActive 
-                      ? `${node.tech.color}20` 
-                      : "rgba(255, 255, 255, 0.05)",
-                    backdropFilter: "blur(10px)",
-                    border: isActive 
-                      ? `2px solid ${node.tech.color}` 
-                      : "1px solid rgba(255, 255, 255, 0.1)",
-                    boxShadow: isActive 
-                      ? `0 0 20px ${node.tech.color}80, inset 0 0 10px ${node.tech.color}40` 
-                      : "0 4px 6px rgba(0, 0, 0, 0.1)",
-                    transition: "all 0.3s ease",
-                  }}
-                >
-                  <Icon
-                    size={28}
-                    style={{
-                      color: isActive ? "#ffffff" : node.tech.color,
-                      filter: `drop-shadow(0 0 ${isActive ? "8px" : "4px"} ${node.tech.color})`,
-                      transition: "all 0.3s ease",
-                    }}
-                  />
-                </div>
-
-                {/* Label always visible but styled */}
-                <div
-                  style={{
-                    padding: "3px 10px",
-                    backgroundColor: isActive 
-                      ? `${node.tech.color}30` 
-                      : "rgba(0, 0, 0, 0.6)",
-                    backdropFilter: "blur(8px)",
-                    border: isActive 
-                      ? `1px solid ${node.tech.color}` 
-                      : "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "6px",
-                    fontSize: "10px",
-                    fontWeight: "600",
-                    color: isActive ? "#ffffff" : "#a0a0a0",
-                    whiteSpace: "nowrap",
-                    boxShadow: isActive 
-                      ? `0 0 12px ${node.tech.color}60` 
-                      : "0 2px 4px rgba(0, 0, 0, 0.2)",
-                    transition: "all 0.3s ease",
-                    opacity: isActive ? 1 : 0.7,
-                  }}
-                >
-                  {node.tech.label}
-                </div>
-              </div>
+              />
             </Html>
-
-            {/* Particles effect khi hover */}
-            {isActive && (
-              <>
-                {[...Array(8)].map((_, idx) => {
-                  const angle = (idx / 8) * Math.PI * 2;
-                  const radius = 0.4;
-                  return (
-                    <mesh
-                      key={`particle-${i}-${idx}`}
-                      position={[
-                        Math.cos(angle) * radius,
-                        Math.sin(angle) * radius,
-                        0,
-                      ]}
-                    >
-                      <sphereGeometry args={[0.02, 8, 8]} />
-                      <meshBasicMaterial
-                        color={node.tech.color}
-                        transparent
-                        opacity={0.6}
-                      />
-                    </mesh>
-                  );
-                })}
-              </>
-            )}
-
-            {/* Rotating ring orbit khi hover */}
-            {isActive && (
-              <mesh rotation={[0, 0, 0]}>
-                <torusGeometry args={[0.35, 0.01, 16, 32]} />
-                <meshBasicMaterial
-                  color={node.tech.color}
-                  transparent
-                  opacity={0.5}
-                />
-              </mesh>
-            )}
           </group>
         );
       })}
