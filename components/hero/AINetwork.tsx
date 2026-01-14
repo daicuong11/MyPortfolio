@@ -3,7 +3,7 @@
 import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Html } from "@react-three/drei";
+import { Html, RoundedBox } from "@react-three/drei";
 import { IconType } from "react-icons";
 import { 
   SiReact, 
@@ -175,7 +175,7 @@ export default function AINetwork({ count = 40 }) {
       });
     });
 
-    // Update node groups với scale effect và rotation khi hover
+    // Update node groups với scale effect và rotation
     nodesRef.current.forEach((group, i) => {
       if (group) {
         group.position.copy(nodes[i].position);
@@ -183,19 +183,21 @@ export default function AINetwork({ count = 40 }) {
         // Scale effect khi hover hoặc click
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
-        const targetScale = isClicked ? 2.0 : isHovered ? 1.5 : 1;
-        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+        const targetScale = isClicked ? 1.4 : isHovered ? 1.2 : 1;
+        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
         
-        // Subtle rotation animation for cubes
-        if (group.children[0] && group.children[0] instanceof THREE.Mesh) {
-          const cube = group.children[0] as THREE.Mesh;
-          cube.rotation.x += 0.002;
-          cube.rotation.y += 0.002;
-        }
-        if (group.children[1] && group.children[1] instanceof THREE.Mesh) {
-          const wireframe = group.children[1] as THREE.Mesh;
-          wireframe.rotation.x += 0.002;
-          wireframe.rotation.y += 0.002;
+        // Subtle floating animation - cards face camera
+        group.rotation.y = Math.sin(state.clock.elapsedTime * 0.3 + i) * 0.1;
+        group.rotation.x = Math.cos(state.clock.elapsedTime * 0.2 + i) * 0.05;
+        
+        // Rotate particles and ring when active
+        if (isHovered || isClicked) {
+          // Find and rotate the torus (ring)
+          group.children.forEach((child) => {
+            if (child instanceof THREE.Mesh && child.geometry instanceof THREE.TorusGeometry) {
+              child.rotation.z += 0.02;
+            }
+          });
         }
       }
     });
@@ -219,7 +221,7 @@ export default function AINetwork({ count = 40 }) {
 
   return (
     <group>
-      {/* Tech Icon Nodes - Cubic Blocks */}
+      {/* Tech Cards - 3D Glass Morphism Style */}
       {nodes.map((node, i) => {
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
@@ -232,138 +234,196 @@ export default function AINetwork({ count = 40 }) {
             ref={(el) => {
               if (el) nodesRef.current[i] = el;
             }}
-            onPointerEnter={(e) => {
-              e.stopPropagation();
-              setHoveredIndex(i);
-              hoveredNodeRef.current = i;
-              document.body.style.cursor = "pointer";
-            }}
-            onPointerLeave={(e) => {
-              e.stopPropagation();
-              setHoveredIndex(null);
-              hoveredNodeRef.current = null;
-              document.body.style.cursor = "default";
-            }}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (clickedNodeRef.current === i) {
-                clickedNodeRef.current = null;
-              } else {
-                clickedNodeRef.current = i;
-                // Reset sau 1.5 giây
-                setTimeout(() => {
-                  clickedNodeRef.current = null;
-                }, 1500);
-              }
-            }}
           >
-            {/* Cube container with glow */}
-            <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
-              <boxGeometry args={[0.3, 0.3, 0.3]} />
-              <meshStandardMaterial
-                color={node.tech.color}
-                emissive={node.tech.color}
-                emissiveIntensity={isActive ? 1.2 : 0.4}
-                transparent
-                opacity={isActive ? 0.8 : 0.4}
-                metalness={0.5}
-                roughness={0.2}
-              />
-            </mesh>
+            {/* Background glow sphere khi hover */}
+            {isActive && (
+              <mesh>
+                <sphereGeometry args={[0.5, 32, 32]} />
+                <meshBasicMaterial
+                  color={node.tech.color}
+                  transparent
+                  opacity={0.15}
+                />
+              </mesh>
+            )}
 
-            {/* Inner cube wireframe */}
-            <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
-              <boxGeometry args={[0.32, 0.32, 0.32]} />
+            {/* Main Card - RoundedBox with glass effect */}
+            <RoundedBox
+              args={[0.5, 0.5, 0.08]}
+              radius={0.05}
+              smoothness={4}
+              onPointerEnter={(e) => {
+                e.stopPropagation();
+                setHoveredIndex(i);
+                hoveredNodeRef.current = i;
+                document.body.style.cursor = "pointer";
+              }}
+              onPointerLeave={(e) => {
+                e.stopPropagation();
+                setHoveredIndex(null);
+                hoveredNodeRef.current = null;
+                document.body.style.cursor = "default";
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (clickedNodeRef.current === i) {
+                  clickedNodeRef.current = null;
+                } else {
+                  clickedNodeRef.current = i;
+                  setTimeout(() => {
+                    clickedNodeRef.current = null;
+                  }, 1500);
+                }
+              }}
+            >
+              <meshPhysicalMaterial
+                color={isActive ? node.tech.color : "#1a1a2e"}
+                emissive={node.tech.color}
+                emissiveIntensity={isActive ? 0.6 : 0.2}
+                transparent
+                opacity={isActive ? 0.9 : 0.7}
+                metalness={0.2}
+                roughness={0.3}
+                clearcoat={1}
+                clearcoatRoughness={0.2}
+                transmission={0.1}
+                thickness={0.5}
+              />
+            </RoundedBox>
+
+            {/* Card border/outline */}
+            <RoundedBox
+              args={[0.52, 0.52, 0.09]}
+              radius={0.05}
+              smoothness={4}
+            >
               <meshBasicMaterial
                 color={node.tech.color}
-                wireframe
                 transparent
-                opacity={isActive ? 0.6 : 0.3}
+                opacity={isActive ? 0.6 : 0.2}
+                wireframe
               />
-            </mesh>
+            </RoundedBox>
 
-            {/* Tech Icon using HTML */}
+            {/* Tech Icon - HTML Overlay */}
             <Html
               center
-              distanceFactor={8}
-              position={[0, 0, 0.2]}
+              distanceFactor={6}
+              position={[0, 0, 0.05]}
               style={{
                 pointerEvents: "none",
                 userSelect: "none",
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               }}
             >
               <div
                 style={{
                   display: "flex",
+                  flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  width: isActive ? "48px" : "36px",
-                  height: isActive ? "48px" : "36px",
-                  transition: "all 0.3s ease",
+                  gap: "4px",
+                  transform: isActive ? "scale(1.2)" : "scale(1)",
+                  transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 }}
               >
-                <Icon
-                  size={isActive ? 32 : 24}
-                  style={{
-                    color: isActive ? "#ffffff" : node.tech.color,
-                    filter: `drop-shadow(0 0 ${isActive ? "12px" : "6px"} ${node.tech.color})`,
-                    transition: "all 0.3s ease",
-                  }}
-                />
-              </div>
-            </Html>
-
-            {/* Label hiển thị khi hover */}
-            {isActive && (
-              <Html
-                center
-                distanceFactor={8}
-                position={[0, -0.4, 0]}
-                style={{
-                  pointerEvents: "none",
-                  userSelect: "none",
-                }}
-              >
+                {/* Icon Container */}
                 <div
                   style={{
-                    padding: "4px 12px",
-                    backgroundColor: "rgba(0, 0, 0, 0.8)",
-                    border: `1px solid ${node.tech.color}`,
-                    borderRadius: "8px",
-                    fontSize: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: "48px",
+                    height: "48px",
+                    borderRadius: "12px",
+                    backgroundColor: isActive 
+                      ? `${node.tech.color}20` 
+                      : "rgba(255, 255, 255, 0.05)",
+                    backdropFilter: "blur(10px)",
+                    border: isActive 
+                      ? `2px solid ${node.tech.color}` 
+                      : "1px solid rgba(255, 255, 255, 0.1)",
+                    boxShadow: isActive 
+                      ? `0 0 20px ${node.tech.color}80, inset 0 0 10px ${node.tech.color}40` 
+                      : "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <Icon
+                    size={28}
+                    style={{
+                      color: isActive ? "#ffffff" : node.tech.color,
+                      filter: `drop-shadow(0 0 ${isActive ? "8px" : "4px"} ${node.tech.color})`,
+                      transition: "all 0.3s ease",
+                    }}
+                  />
+                </div>
+
+                {/* Label always visible but styled */}
+                <div
+                  style={{
+                    padding: "3px 10px",
+                    backgroundColor: isActive 
+                      ? `${node.tech.color}30` 
+                      : "rgba(0, 0, 0, 0.6)",
+                    backdropFilter: "blur(8px)",
+                    border: isActive 
+                      ? `1px solid ${node.tech.color}` 
+                      : "1px solid rgba(255, 255, 255, 0.1)",
+                    borderRadius: "6px",
+                    fontSize: "10px",
                     fontWeight: "600",
-                    color: "#ffffff",
+                    color: isActive ? "#ffffff" : "#a0a0a0",
                     whiteSpace: "nowrap",
-                    boxShadow: `0 0 12px ${node.tech.color}`,
+                    boxShadow: isActive 
+                      ? `0 0 12px ${node.tech.color}60` 
+                      : "0 2px 4px rgba(0, 0, 0, 0.2)",
+                    transition: "all 0.3s ease",
+                    opacity: isActive ? 1 : 0.7,
                   }}
                 >
                   {node.tech.label}
                 </div>
-              </Html>
-            )}
+              </div>
+            </Html>
 
-            {/* Outer rotating ring khi hover */}
+            {/* Particles effect khi hover */}
             {isActive && (
               <>
-                <mesh rotation={[Math.PI / 2, 0, 0]}>
-                  <ringGeometry args={[0.35, 0.4, 32]} />
-                  <meshBasicMaterial
-                    color={node.tech.color}
-                    transparent
-                    opacity={0.6}
-                    side={THREE.DoubleSide}
-                  />
-                </mesh>
-                <mesh rotation={[0, Math.PI / 2, 0]}>
-                  <ringGeometry args={[0.35, 0.4, 32]} />
-                  <meshBasicMaterial
-                    color={node.tech.color}
-                    transparent
-                    opacity={0.4}
-                    side={THREE.DoubleSide}
-                  />
-                </mesh>
+                {[...Array(8)].map((_, idx) => {
+                  const angle = (idx / 8) * Math.PI * 2;
+                  const radius = 0.4;
+                  return (
+                    <mesh
+                      key={`particle-${i}-${idx}`}
+                      position={[
+                        Math.cos(angle) * radius,
+                        Math.sin(angle) * radius,
+                        0,
+                      ]}
+                    >
+                      <sphereGeometry args={[0.02, 8, 8]} />
+                      <meshBasicMaterial
+                        color={node.tech.color}
+                        transparent
+                        opacity={0.6}
+                      />
+                    </mesh>
+                  );
+                })}
               </>
+            )}
+
+            {/* Rotating ring orbit khi hover */}
+            {isActive && (
+              <mesh rotation={[0, 0, 0]}>
+                <torusGeometry args={[0.35, 0.01, 16, 32]} />
+                <meshBasicMaterial
+                  color={node.tech.color}
+                  transparent
+                  opacity={0.5}
+                />
+              </mesh>
             )}
           </group>
         );
