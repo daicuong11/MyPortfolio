@@ -3,15 +3,42 @@
 import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import { Text } from "@react-three/drei";
+
+type TechIcon = {
+  emoji: string;
+  label: string;
+  color: string;
+};
 
 type Node = {
   position: THREE.Vector3;
   velocity: THREE.Vector3;
   originalPosition: THREE.Vector3;
+  tech: TechIcon;
 };
 
+// Danh sách các biểu tượng công nghệ IT
+const techIcons: TechIcon[] = [
+  { emoji: "🤖", label: "AI", color: "#00e5ff" },
+  { emoji: "☁️", label: "Cloud", color: "#4dd0e1" },
+  { emoji: "💾", label: "Database", color: "#26c6da" },
+  { emoji: "🔒", label: "Security", color: "#00acc1" },
+  { emoji: "⛓️", label: "Blockchain", color: "#0097a7" },
+  { emoji: "📱", label: "Mobile", color: "#00838f" },
+  { emoji: "🌐", label: "Web", color: "#006064" },
+  { emoji: "📡", label: "IoT", color: "#80deea" },
+  { emoji: "📊", label: "Analytics", color: "#26c6da" },
+  { emoji: "🧠", label: "ML", color: "#00e5ff" },
+  { emoji: "⚙️", label: "DevOps", color: "#4dd0e1" },
+  { emoji: "🔌", label: "API", color: "#00acc1" },
+  { emoji: "💫", label: "Quantum", color: "#80deea" },
+  { emoji: "📶", label: "5G", color: "#0097a7" },
+  { emoji: "🥽", label: "AR/VR", color: "#00e5ff" },
+];
+
 export default function AINetwork({ count = 40 }) {
-  const nodesRef = useRef<THREE.Mesh[]>([]);
+  const nodesRef = useRef<THREE.Group[]>([]);
   const lineGeometriesRef = useRef<THREE.BufferGeometry[]>([]);
   const mouseRef = useRef({ x: 0, y: 0, z: 0 });
   const hoveredNodeRef = useRef<number | null>(null);
@@ -26,6 +53,8 @@ export default function AINetwork({ count = 40 }) {
         (Math.random() - 0.5) * 8,
         (Math.random() - 0.5) * 8
       );
+      // Gán ngẫu nhiên một tech icon cho mỗi node
+      const tech = techIcons[i % techIcons.length];
       arr.push({
         position: pos.clone(),
         originalPosition: pos.clone(),
@@ -34,6 +63,7 @@ export default function AINetwork({ count = 40 }) {
           (Math.random() - 0.5) * 0.008,
           (Math.random() - 0.5) * 0.008
         ),
+        tech,
       });
     }
     return arr;
@@ -121,16 +151,16 @@ export default function AINetwork({ count = 40 }) {
       });
     });
 
-    // Update node meshes với scale effect khi hover
-    nodesRef.current.forEach((mesh, i) => {
-      if (mesh) {
-        mesh.position.copy(nodes[i].position);
+    // Update node groups với scale effect khi hover
+    nodesRef.current.forEach((group, i) => {
+      if (group) {
+        group.position.copy(nodes[i].position);
         
         // Scale effect khi hover hoặc click
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
-        const targetScale = isClicked ? 2.5 : isHovered ? 1.8 : 1;
-        mesh.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+        const targetScale = isClicked ? 2.0 : isHovered ? 1.5 : 1;
+        group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
       }
     });
 
@@ -153,58 +183,118 @@ export default function AINetwork({ count = 40 }) {
 
   return (
     <group>
-      {/* Nodes */}
-      {nodes.map((_, i) => (
-        <mesh
-          key={`node-${i}`}
-          ref={(el) => {
-            if (el) nodesRef.current[i] = el;
-          }}
-          onPointerEnter={(e) => {
-            e.stopPropagation();
-            setHoveredIndex(i);
-            hoveredNodeRef.current = i;
-            document.body.style.cursor = "pointer";
-          }}
-          onPointerLeave={(e) => {
-            e.stopPropagation();
-            setHoveredIndex(null);
-            hoveredNodeRef.current = null;
-            document.body.style.cursor = "default";
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (clickedNodeRef.current === i) {
-              clickedNodeRef.current = null;
-            } else {
-              clickedNodeRef.current = i;
-              // Reset sau 1 giây
-              setTimeout(() => {
+      {/* Tech Icon Nodes */}
+      {nodes.map((node, i) => {
+        const isHovered = hoveredIndex === i;
+        const isClicked = clickedNodeRef.current === i;
+        const isActive = isHovered || isClicked;
+        
+        return (
+          <group
+            key={`node-${i}`}
+            ref={(el) => {
+              if (el) nodesRef.current[i] = el;
+            }}
+            onPointerEnter={(e) => {
+              e.stopPropagation();
+              setHoveredIndex(i);
+              hoveredNodeRef.current = i;
+              document.body.style.cursor = "pointer";
+            }}
+            onPointerLeave={(e) => {
+              e.stopPropagation();
+              setHoveredIndex(null);
+              hoveredNodeRef.current = null;
+              document.body.style.cursor = "default";
+            }}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (clickedNodeRef.current === i) {
                 clickedNodeRef.current = null;
-              }, 1000);
-            }
-          }}
-        >
-          <sphereGeometry args={[0.06, 12, 12]} />
-          <meshStandardMaterial
-            color={hoveredIndex === i || clickedNodeRef.current === i ? "#00e5ff" : "#4dd0e1"}
-            emissive={hoveredIndex === i || clickedNodeRef.current === i ? "#00e5ff" : "#4dd0e1"}
-            emissiveIntensity={hoveredIndex === i || clickedNodeRef.current === i ? 2.5 : 1.2}
-          />
-        </mesh>
-      ))}
+              } else {
+                clickedNodeRef.current = i;
+                // Reset sau 1.5 giây
+                setTimeout(() => {
+                  clickedNodeRef.current = null;
+                }, 1500);
+              }
+            }}
+          >
+            {/* Background glow sphere */}
+            <mesh>
+              <sphereGeometry args={[0.15, 16, 16]} />
+              <meshStandardMaterial
+                color={node.tech.color}
+                emissive={node.tech.color}
+                emissiveIntensity={isActive ? 1.5 : 0.5}
+                transparent
+                opacity={isActive ? 0.6 : 0.3}
+              />
+            </mesh>
 
-      {/* Connections */}
-      {connections.map((_, i) => {
+            {/* Tech Icon Emoji */}
+            <Text
+              fontSize={0.25}
+              color={isActive ? "#ffffff" : "#e0f7fa"}
+              anchorX="center"
+              anchorY="middle"
+              outlineWidth={0.01}
+              outlineColor={node.tech.color}
+            >
+              {node.tech.emoji}
+            </Text>
+
+            {/* Label hiển thị khi hover */}
+            {isActive && (
+              <Text
+                position={[0, -0.35, 0]}
+                fontSize={0.12}
+                color="#ffffff"
+                anchorX="center"
+                anchorY="middle"
+                outlineWidth={0.005}
+                outlineColor={node.tech.color}
+              >
+                {node.tech.label}
+              </Text>
+            )}
+
+            {/* Outer ring khi hover */}
+            {isActive && (
+              <mesh rotation={[Math.PI / 2, 0, 0]}>
+                <ringGeometry args={[0.2, 0.25, 32]} />
+                <meshBasicMaterial
+                  color={node.tech.color}
+                  transparent
+                  opacity={0.5}
+                  side={THREE.DoubleSide}
+                />
+              </mesh>
+            )}
+          </group>
+        );
+      })}
+
+      {/* Tech Connections */}
+      {connections.map(([a, b], i) => {
         const geometry = lineGeometriesRef.current[i];
+        const isConnectedToHovered = hoveredIndex === a || hoveredIndex === b;
+        const isConnectedToClicked = clickedNodeRef.current === a || clickedNodeRef.current === b;
+        const isHighlighted = isConnectedToHovered || isConnectedToClicked;
+        
+        // Blend colors from both connected nodes
+        const colorA = nodes[a].tech.color;
+        const colorB = nodes[b].tech.color;
+        
         return (
           // eslint-disable-next-line @typescript-eslint/ban-ts-comment
           // @ts-ignore - React Three Fiber line component type issue
           <line key={`line-${i}`} geometry={geometry}>
             <lineBasicMaterial
-              color="#4dd0e1"
+              color={isHighlighted ? "#00e5ff" : colorA}
               transparent
-              opacity={0.12}
+              opacity={isHighlighted ? 0.5 : 0.15}
+              linewidth={isHighlighted ? 2 : 1}
             />
           </line>
         );
