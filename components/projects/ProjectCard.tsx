@@ -8,6 +8,7 @@ import { useTranslations } from "@/lib/i18n";
 import ProjectPreviewPopup from "./ProjectPreviewPopup";
 import CircularProgress from "./CircularProgress";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { videoCache } from "@/lib/videoCache";
 
 interface ProjectCardProps {
   project: {
@@ -30,28 +31,11 @@ function ProjectCard({ project }: ProjectCardProps) {
   const [isHoveringThumbnail, setIsHoveringThumbnail] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const progressIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const videoPreloadRef = useRef<HTMLVideoElement | null>(null);
   const isOpeningRef = useRef(false); // Prevent multiple opens
-
-  // Preload video when component mounts
-  useEffect(() => {
-    if (project.video) {
-      const video = document.createElement("video");
-      video.src = project.video;
-      video.preload = "auto";
-      video.muted = true;
-      video.playsInline = true;
-      video.load();
-      videoPreloadRef.current = video;
-    }
-    return () => {
-      if (videoPreloadRef.current) {
-        videoPreloadRef.current = null;
-      }
-    };
-  }, [project.video]);
+  const preloadStartTimeRef = useRef<number>(0);
 
   const clearAllTimeouts = useCallback(() => {
     if (hoverTimeoutRef.current) {
@@ -64,7 +48,7 @@ function ProjectCard({ project }: ProjectCardProps) {
     }
   }, []);
 
-  const handleThumbnailEnter = useCallback(() => {
+  const handleThumbnailEnter = useCallback(async () => {
     // Prevent multiple opens
     if (!project.video || isOpeningRef.current || isPreviewOpen) {
       return;
@@ -73,18 +57,29 @@ function ProjectCard({ project }: ProjectCardProps) {
     setIsHoveringThumbnail(true);
     setIsLoading(true);
     setProgress(0);
+    setVideoReady(false);
     isOpeningRef.current = true;
+    preloadStartTimeRef.current = Date.now();
     
     // Clear any existing timeouts
     clearAllTimeouts();
 
-    // Start progress bar animation (optimized with RAF)
-    const duration = 1200; // 1.2 seconds
+    // Start video preloading in parallel
+    const videoPromise = videoCache.preload(project.video).then(() => {
+      setVideoReady(true);
+    }).catch((error) => {
+      console.error("Failed to preload video:", error);
+      // Continue anyway, let the popup handle it
+      setVideoReady(true);
+    });
+
+    // Minimum loading duration: 1.4 seconds for better UX
+    const MINIMUM_DURATION = 1400; // 1.4 seconds
     const startTime = Date.now();
       
     const animate = () => {
       const elapsed = Date.now() - startTime;
-      const newProgress = Math.min((elapsed / duration) * 100, 100);
+      const newProgress = Math.min((elapsed / MINIMUM_DURATION) * 100, 100);
       
       setProgress(newProgress);
       
@@ -93,10 +88,21 @@ function ProjectCard({ project }: ProjectCardProps) {
           animate();
         }, 16) as any; // ~60fps
       } else {
-        // Open preview when progress completes
-        setIsPreviewOpen(true);
-        setIsLoading(false);
-        isOpeningRef.current = false;
+        // Wait for both progress bar AND video to be ready
+        videoPromise.then(() => {
+          // Ensure minimum time has passed
+          const totalElapsed = Date.now() - preloadStartTimeRef.current;
+          const remainingTime = Math.max(0, MINIMUM_DURATION - totalElapsed);
+          
+          setTimeout(() => {
+            // Only open if still hovering/loading
+            if (isOpeningRef.current) {
+              setIsPreviewOpen(true);
+              setIsLoading(false);
+              isOpeningRef.current = false;
+            }
+          }, remainingTime);
+        });
       }
     };
     
@@ -211,6 +217,26 @@ function ProjectCard({ project }: ProjectCardProps) {
             }}
           />
           
+          {/* Cached video indicator badge */}
+          {project.video && videoCache.isReady(project.video) && !isHoveringThumbnail && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="absolute top-3 right-3 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full backdrop-blur-md border text-[10px] font-medium"
+              style={{
+                backgroundColor: `rgba(${colors.primary}, 0.2)`,
+                borderColor: `rgba(${colors.accent}, 0.5)`,
+                color: `rgba(${colors.accent}, 0.9)`,
+              }}
+            >
+              <div 
+                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ backgroundColor: `rgba(${colors.accent}, 1)` }}
+              />
+              Ready
+            </motion.div>
+          )}
+
           {/* Hover indicator with progress bar */}
           {project.video && (
             <motion.div 
@@ -221,14 +247,25 @@ function ProjectCard({ project }: ProjectCardProps) {
               {isLoading ? (
                 <div className="flex flex-col items-center gap-3">
                   <CircularProgress progress={progress} size={50} strokeWidth={3} />
-                  <motion.span
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-xs font-medium"
-                    style={{ color: `rgba(${colors.accent}, 0.9)` }}
-                  >
-                    {t.projects.loadingPreview}
-                  </motion.span>
+                  <div className="flex flex-col items-center gap-1">
+                    <motion.span
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-xs font-medium"
+                      style={{ color: `rgba(${colors.accent}, 0.9)` }}
+                    >
+                      {videoReady ? t.projects.loadingPreview : t.projects.loadingVideo || "Loading video..."}
+                    </motion.span>
+                    {videoReady && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[10px] text-gray-400"
+                      >
+                        Video ready ✓
+                      </motion.span>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <motion.div

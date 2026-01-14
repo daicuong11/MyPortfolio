@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Minimize2, Play, Pause, Volume2, VolumeX, RotateCcw } from "lucide-react";
 import { useTranslations } from "@/lib/i18n";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { videoCache } from "@/lib/videoCache";
 
 interface ProjectPreviewPopupProps {
   isOpen: boolean;
@@ -33,43 +34,79 @@ export default function ProjectPreviewPopup({
     setMounted(true);
   }, []);
 
-  // Preload video when popup opens
+  // Use cached video when popup opens for instant playback
   useEffect(() => {
     if (isOpen && videoRef.current) {
-      setIsLoading(true);
       const video = videoRef.current;
       
-      video.load();
+      // Check if video is already cached and ready
+      const cachedVideo = videoCache.get(videoUrl);
       
-      const handleCanPlay = () => {
+      if (cachedVideo && videoCache.isReady(videoUrl)) {
+        // Video is already preloaded! Use it directly
         setIsLoading(false);
-        // Try to play, but handle errors gracefully
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise
-            .then(() => {
-              setIsPlaying(true);
-            })
-            .catch((error) => {
-              // Browser prevented autoplay (common on mobile/background tabs)
-              console.log("Autoplay prevented:", error.name);
-              setIsPlaying(false);
-            });
+        
+        // Clone the cached video state to our ref
+        // The video element should already be loaded
+        const playVideo = () => {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+              })
+              .catch((error) => {
+                console.log("Autoplay prevented:", error.name);
+                setIsPlaying(false);
+              });
+          }
+        };
+        
+        // If video is already ready, play immediately
+        if (video.readyState >= 3) {
+          playVideo();
+        } else {
+          // Wait for ready state
+          const handleCanPlay = () => {
+            setIsLoading(false);
+            playVideo();
+            video.removeEventListener('canplaythrough', handleCanPlay);
+          };
+          video.addEventListener('canplaythrough', handleCanPlay);
         }
-      };
-      
-      video.addEventListener('canplaythrough', handleCanPlay);
-      
-      return () => {
-        video.removeEventListener('canplaythrough', handleCanPlay);
-      };
+      } else {
+        // Fallback: load video normally if not cached
+        setIsLoading(true);
+        video.load();
+        
+        const handleCanPlay = () => {
+          setIsLoading(false);
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                setIsPlaying(true);
+              })
+              .catch((error) => {
+                console.log("Autoplay prevented:", error.name);
+                setIsPlaying(false);
+              });
+          }
+        };
+        
+        video.addEventListener('canplaythrough', handleCanPlay);
+        
+        return () => {
+          video.removeEventListener('canplaythrough', handleCanPlay);
+        };
+      }
     } else if (!isOpen && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
       setIsPlaying(false);
       setIsLoading(true);
     }
-  }, [isOpen]);
+  }, [isOpen, videoUrl]);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {

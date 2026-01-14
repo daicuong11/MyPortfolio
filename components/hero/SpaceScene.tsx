@@ -12,7 +12,7 @@ function CameraRig() {
   const mouse = useRef({ x: 0, y: 0 });
   const targetPosition = useRef({ x: 0, y: 0 });
   const [isScrolling, setIsScrolling] = useState(false);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -136,7 +136,7 @@ export default function SpaceScene() {
           <CameraRig />
 
           {/* Simplified Bloom for better performance */}
-          <EffectComposer disableNormalPass>
+          <EffectComposer>
             <Bloom
               intensity={0.8}
               luminanceThreshold={0.2}

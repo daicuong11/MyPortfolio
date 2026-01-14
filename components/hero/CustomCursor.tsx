@@ -10,7 +10,7 @@ function CustomCursor() {
   const [isHovering, setIsHovering] = useState(false);
   const [isScrolling, setIsScrolling] = useState(false);
   const heroRef = useRef<HTMLElement | null>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout>();
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
