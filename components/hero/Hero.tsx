@@ -38,11 +38,12 @@ function Hero() {
   const cvFile = getFileUrl(cvFileName);
 
   const switchLang = () => {
-    if (isVI) {
-      router.push(pathname.replace("/vi", "/en"));
-    } else {
-      router.push(pathname.replace("/en", "/vi"));
-    }
+    const newPath = isVI 
+      ? pathname.replace("/vi", "/en")
+      : pathname.replace("/en", "/vi");
+    
+    // Keep scroll position when switching language
+    router.push(newPath, { scroll: false });
   };
 
   return (
