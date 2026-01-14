@@ -147,19 +147,20 @@ export default function ProjectPreviewPopup({
               }}
               className="relative w-full max-w-6xl aspect-video pointer-events-auto"
             >
-              {/* Dynamic Glow effect around popup */}
+              {/* Dynamic Glow effect around popup - optimized blur */}
               <motion.div 
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.5 }}
-                className="absolute -inset-6 rounded-3xl blur-3xl"
+                className="absolute -inset-6 rounded-3xl blur-xl md:blur-2xl"
                 style={{
                   backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.3), rgba(${colors.secondary}, 0.3), rgba(${colors.primary}, 0.3))`,
+                  willChange: 'transform, opacity',
                 }}
               />
               
-              {/* Pulsing outer glow */}
+              {/* Pulsing outer glow - disabled on mobile for performance */}
               <motion.div
                 animate={{
                   opacity: [0.3, 0.6, 0.3],
@@ -170,9 +171,10 @@ export default function ProjectPreviewPopup({
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="absolute -inset-8 rounded-3xl blur-3xl"
+                className="hidden md:block absolute -inset-8 rounded-3xl blur-xl md:blur-2xl"
                 style={{
                   backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 0.2), rgba(${colors.secondary}, 0.2), rgba(${colors.accent}, 0.2))`,
+                  willChange: 'transform, opacity',
                 }}
               />
 
@@ -192,13 +194,13 @@ export default function ProjectPreviewPopup({
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2, duration: 0.4 }}
-                  className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-4 bg-gradient-to-b from-black/90 to-transparent"
+                  className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between p-2 sm:p-4 bg-gradient-to-b from-black/90 to-transparent"
                 >
                   <motion.h3 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3, duration: 0.4 }}
-                    className="text-xl font-bold"
+                    className="text-sm sm:text-base md:text-xl font-bold truncate pr-2"
                     style={{
                       backgroundImage: `linear-gradient(90deg, rgba(${colors.accent}, 1), rgba(${colors.secondary}, 1))`,
                       WebkitBackgroundClip: "text",
@@ -217,7 +219,7 @@ export default function ProjectPreviewPopup({
                     whileHover={{ scale: 1.1, rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={onClose}
-                    className="group relative flex items-center justify-center w-9 h-9 rounded-full bg-white/10 border transition-all duration-300 cursor-pointer"
+                    className="group relative flex items-center justify-center w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-white/10 border transition-all duration-300 cursor-pointer flex-shrink-0"
                     style={{ borderColor: `rgba(${colors.accent}, 0.2)` }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.backgroundColor = `rgba(${colors.accent}, 0.2)`;
@@ -230,9 +232,9 @@ export default function ProjectPreviewPopup({
                     aria-label="Close preview"
                   >
                     <Minimize2
-                      size={16}
+                      size={14}
+                      className="sm:w-4 sm:h-4 group-hover:brightness-110 transition-all"
                       style={{ color: `rgba(${colors.accent}, 0.9)` }}
-                      className="group-hover:brightness-110 transition-all"
                     />
                     <motion.div 
                       className="absolute inset-0 rounded-full bg-cyan-400/20 blur-md"
@@ -261,6 +263,10 @@ export default function ProjectPreviewPopup({
                     initial={{ scale: 1.1, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
+                    style={{
+                      willChange: 'transform',
+                      transform: 'translateZ(0)',
+                    }}
                   />
                   
                   {/* Gradient overlay for better text visibility */}
@@ -272,11 +278,11 @@ export default function ProjectPreviewPopup({
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
-                  className="absolute bottom-0 left-0 right-0 z-20 p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent"
+                  className="absolute bottom-0 left-0 right-0 z-20 p-2 sm:p-4 md:p-6 bg-gradient-to-t from-black/95 via-black/80 to-transparent"
                 >
                   <div className="flex items-center justify-between max-w-4xl mx-auto">
                     {/* Video controls */}
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2">
                       {/* Play/Pause */}
                       <motion.button
                         whileHover={{ scale: 1.1 }}
@@ -301,7 +307,7 @@ export default function ProjectPreviewPopup({
                             }
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        className="group relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
                         style={{
                           backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                           borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -316,9 +322,9 @@ export default function ProjectPreviewPopup({
                         }}
                       >
                         {isPlaying ? (
-                          <Pause size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                          <Pause className="w-3 h-3 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         ) : (
-                          <Play size={18} className="ml-0.5" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                          <Play className="w-3 h-3 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px] ml-0.5" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         )}
                         <div 
                           className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
@@ -336,7 +342,7 @@ export default function ProjectPreviewPopup({
                             setIsMuted(!isMuted);
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        className="group relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
                         style={{
                           backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                           borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -351,9 +357,9 @@ export default function ProjectPreviewPopup({
                         }}
                       >
                         {isMuted ? (
-                          <VolumeX size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                          <VolumeX className="w-3 h-3 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         ) : (
-                          <Volume2 size={18} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                          <Volume2 className="w-3 h-3 sm:w-4 sm:h-4 md:w-[18px] md:h-[18px]" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         )}
                         <div 
                           className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
@@ -381,7 +387,7 @@ export default function ProjectPreviewPopup({
                             }
                           }
                         }}
-                        className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
+                        className="group relative w-7 h-7 sm:w-9 sm:h-9 md:w-10 md:h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
                         style={{
                           backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                           borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -395,7 +401,7 @@ export default function ProjectPreviewPopup({
                           e.currentTarget.style.backgroundImage = `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`;
                         }}
                       >
-                        <RotateCcw size={16} style={{ color: `rgba(${colors.accent}, 0.9)` }} />
+                        <RotateCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4" style={{ color: `rgba(${colors.accent}, 0.9)` }} />
                         <div 
                           className="absolute inset-0 rounded-full blur-sm transition-all duration-300 opacity-0 group-hover:opacity-100"
                           style={{ backgroundColor: `rgba(${colors.accent}, 0.1)` }}
@@ -444,30 +450,30 @@ export default function ProjectPreviewPopup({
                   </motion.div>
                 )}
 
-                {/* Corner glow effects */}
+                {/* Corner glow effects - optimized blur, hidden on mobile */}
                 <motion.div 
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2, duration: 0.6 }}
-                  className="absolute top-0 left-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" 
+                  className="hidden md:block absolute top-0 left-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-2xl -translate-x-1/2 -translate-y-1/2" 
                 />
                 <motion.div 
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.25, duration: 0.6 }}
-                  className="absolute top-0 right-0 w-40 h-40 bg-purple-500/30 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2" 
+                  className="hidden md:block absolute top-0 right-0 w-40 h-40 bg-purple-500/30 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2" 
                 />
                 <motion.div 
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.3, duration: 0.6 }}
-                  className="absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-3xl -translate-x-1/2 translate-y-1/2" 
+                  className="hidden md:block absolute bottom-0 left-0 w-40 h-40 bg-cyan-500/30 rounded-full blur-2xl -translate-x-1/2 translate-y-1/2" 
                 />
                 <motion.div 
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.35, duration: 0.6 }}
-                  className="absolute bottom-0 right-0 w-40 h-40 bg-purple-500/30 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" 
+                  className="hidden md:block absolute bottom-0 right-0 w-40 h-40 bg-purple-500/30 rounded-full blur-2xl translate-x-1/2 translate-y-1/2" 
                 />
               </motion.div>
             </motion.div>

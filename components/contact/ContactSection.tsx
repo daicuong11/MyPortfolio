@@ -58,7 +58,7 @@ function ContactSection() {
           className="mx-auto max-w-2xl"
         >
           {/* Contact cards grid */}
-          <div className="grid md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
             {/* Email Card */}
             <motion.a
               href={t.contact.email.link}
@@ -68,7 +68,7 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              className="group relative p-4 md:p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: `rgba(${colors.accent}, 0.1)`,
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
@@ -93,16 +93,16 @@ function ContactSection() {
               {/* Content */}
               <div className="relative z-10">
                 <div 
-                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                     borderColor: `rgba(${colors.accent}, 0.3)`,
                   }}
                 >
-                  <Mail style={{ color: `rgba(${colors.accent}, 0.9)` }} size={24} />
+                  <Mail style={{ color: `rgba(${colors.accent}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.email.label}</h3>
-                <p className="text-lg font-semibold text-white transition-colors break-all group-hover:scale-105">
+                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.email.label}</h3>
+                <p className="text-sm md:text-lg font-semibold text-white transition-colors break-all group-hover:scale-105">
                   {t.contact.email.value}
                 </p>
               </div>
@@ -125,7 +125,7 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              className="group relative p-4 md:p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: `rgba(${colors.accent}, 0.1)`,
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
@@ -150,16 +150,16 @@ function ContactSection() {
               {/* Content */}
               <div className="relative z-10">
                 <div 
-                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.secondary}, 0.2), rgba(${colors.accent}, 0.2))`,
                     borderColor: `rgba(${colors.secondary}, 0.3)`,
                   }}
                 >
-                  <Github style={{ color: `rgba(${colors.secondary}, 0.9)` }} size={24} />
+                  <Github style={{ color: `rgba(${colors.secondary}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.github.label}</h3>
-                <p className="text-lg font-semibold text-white transition-colors">
+                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.github.label}</h3>
+                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
                   {t.contact.github.value}
                 </p>
               </div>
@@ -182,7 +182,7 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              className="group relative p-4 md:p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: `rgba(${colors.accent}, 0.1)`,
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
@@ -207,16 +207,16 @@ function ContactSection() {
               {/* Content */}
               <div className="relative z-10">
                 <div 
-                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.accent}, 0.2))`,
                     borderColor: `rgba(${colors.primary}, 0.3)`,
                   }}
                 >
-                  <Linkedin style={{ color: `rgba(${colors.primary}, 0.9)` }} size={24} />
+                  <Linkedin style={{ color: `rgba(${colors.primary}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.linkedin.label}</h3>
-                <p className="text-lg font-semibold text-white transition-colors">
+                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.linkedin.label}</h3>
+                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
                   {t.contact.linkedin.value}
                 </p>
               </div>
@@ -239,7 +239,7 @@ function ContactSection() {
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
               whileHover={{ y: -8, scale: 1.02 }}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
+              className="group relative p-4 md:p-6 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 border backdrop-blur-xl transition-all duration-300 cursor-pointer"
               style={{
                 borderColor: `rgba(${colors.accent}, 0.1)`,
                 boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
@@ -264,16 +264,16 @@ function ContactSection() {
               {/* Content */}
               <div className="relative z-10">
                 <div 
-                  className="w-12 h-12 rounded-xl border flex items-center justify-center mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.2), rgba(${colors.primary}, 0.2))`,
                     borderColor: `rgba(${colors.accent}, 0.3)`,
                   }}
                 >
-                  <Eye style={{ color: `rgba(${colors.accent}, 0.9)` }} size={24} />
+                  <Eye style={{ color: `rgba(${colors.accent}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-sm font-medium text-gray-400 mb-1">{t.contact.previewCV.label}</h3>
-                <p className="text-lg font-semibold text-white transition-colors">
+                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.previewCV.label}</h3>
+                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
                   {t.contact.previewCV.value}
                 </p>
               </div>
@@ -298,7 +298,7 @@ function ContactSection() {
             transition={{ delay: 0.6 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="group relative block p-8 rounded-2xl border-2 backdrop-blur-xl transition-all duration-300 overflow-hidden cursor-pointer"
+            className="group relative block p-4 md:p-6 lg:p-8 rounded-2xl border-2 backdrop-blur-xl transition-all duration-300 overflow-hidden cursor-pointer"
             style={{
               backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2), rgba(${colors.primary}, 0.2))`,
               borderColor: `rgba(${colors.accent}, 0.4)`,
@@ -325,33 +325,33 @@ function ContactSection() {
             
             {/* Content */}
             <div className="relative z-10 flex items-center justify-between">
-              <div className="flex items-center gap-6">
+              <div className="flex items-center gap-3 md:gap-4 lg:gap-6">
                 <div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg"
+                  className="w-12 h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-xl md:rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg flex-shrink-0"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 1), rgba(${colors.secondary}, 1))`,
                   }}
                 >
-                  <Download className="text-white" size={28} />
+                  <Download className="text-white w-5 h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" />
                 </div>
-                <div>
+                <div className="min-w-0">
                   <h3 
-                    className="text-sm font-medium mb-1 uppercase tracking-wider"
+                    className="text-xs md:text-sm font-medium mb-0.5 md:mb-1 uppercase tracking-wider"
                     style={{ color: `rgba(${colors.accent}, 0.9)` }}
                   >
                     {t.contact.downloadCV.label}
                   </h3>
-                  <p className="text-2xl font-bold text-white transition-colors">
+                  <p className="text-base md:text-xl lg:text-2xl font-bold text-white transition-colors truncate">
                     {t.contact.downloadCV.value}
                   </p>
                 </div>
               </div>
               
-              {/* Arrow indicator */}
+              {/* Arrow indicator - hidden on mobile */}
               <motion.div
                 animate={{ x: [0, 10, 0] }}
                 transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
+                className="hidden md:block opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
                 style={{ color: `rgba(${colors.accent}, 0.9)` }}
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

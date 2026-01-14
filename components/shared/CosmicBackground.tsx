@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useThemeColors } from "@/hooks/useThemeColors";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface CosmicBackgroundProps {
   intensity?: "light" | "medium" | "strong";
@@ -13,6 +14,7 @@ export default function CosmicBackground({
 }: CosmicBackgroundProps) {
   const [mounted, setMounted] = useState(false);
   const { colors: themeColors } = useThemeColors();
+  const { currentTheme } = useTheme();
 
   useEffect(() => {
     setMounted(true);
@@ -31,6 +33,164 @@ export default function CosmicBackground({
     accent: themeColors.accent,
   };
   const opacityMultiplier = intensityMap[intensity];
+
+  // Render different effects based on theme
+  const renderThemeEffects = () => {
+    if (!mounted) return null;
+
+    switch (currentTheme) {
+      case "spring":
+        return renderSpringEffects();
+      case "summer":
+        return renderSummerEffects();
+      case "autumn":
+        return renderAutumnEffects();
+      case "winter":
+        return renderWinterEffects();
+      case "space":
+      default:
+        return renderSpaceEffects();
+    }
+  };
+
+  // Spring: Cherry Blossoms
+  const renderSpringEffects = () => (
+    <>
+      {/* Cherry blossoms - floating petals */}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`petal-${i}`}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 8 + 4 + "px",
+            height: Math.random() * 8 + 4 + "px",
+            left: Math.random() * 100 + "%",
+            top: Math.random() * 100 + "%",
+            background: `rgba(${colors.primary}, ${0.6 + Math.random() * 0.4})`,
+            boxShadow: `0 0 ${Math.random() * 10 + 5}px rgba(${colors.accent}, 0.5)`,
+          }}
+          animate={{
+            x: [0, Math.random() * 100 - 50, 0],
+            y: [0, Math.random() * 100 + 50],
+            rotate: [0, Math.random() * 360],
+            opacity: [0.8, 0.3, 0],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </>
+  );
+
+  // Summer: Fireflies & Sun Rays
+  const renderSummerEffects = () => (
+    <>
+      {/* Fireflies - glowing particles */}
+      {[...Array(12)].map((_, i) => (
+        <motion.div
+          key={`firefly-${i}`}
+          className="absolute rounded-full"
+          style={{
+            width: "6px",
+            height: "6px",
+            left: Math.random() * 100 + "%",
+            top: Math.random() * 100 + "%",
+            background: `rgba(${colors.accent}, 1)`,
+            boxShadow: `0 0 ${Math.random() * 20 + 10}px rgba(${colors.accent}, 0.8)`,
+          }}
+          animate={{
+            x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50, 0],
+            y: [0, Math.random() * 100 - 50, Math.random() * 100 - 50, 0],
+            opacity: [0, 1, 1, 0],
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: Math.random() * 8 + 6,
+            repeat: Infinity,
+            delay: Math.random() * 3,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </>
+  );
+
+  // Autumn: Falling Leaves
+  const renderAutumnEffects = () => (
+    <>
+      {/* Falling leaves */}
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={`leaf-${i}`}
+          className="absolute"
+          style={{
+            width: Math.random() * 12 + 6 + "px",
+            height: Math.random() * 12 + 6 + "px",
+            left: Math.random() * 100 + "%",
+            top: -20 + "%",
+            background: `rgba(${colors.primary}, ${0.7 + Math.random() * 0.3})`,
+            borderRadius: "50% 0 50% 0",
+            boxShadow: `0 0 10px rgba(${colors.secondary}, 0.4)`,
+          }}
+          animate={{
+            x: [0, Math.random() * 100 - 50, Math.random() * 100 - 50],
+            y: [0, "120vh"],
+            rotate: [0, Math.random() * 360 + 360],
+          }}
+          transition={{
+            duration: Math.random() * 8 + 8,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </>
+  );
+
+  // Winter: Snowflakes
+  const renderWinterEffects = () => (
+    <>
+      {/* Snowflakes */}
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={`snow-${i}`}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 6 + 3 + "px",
+            height: Math.random() * 6 + 3 + "px",
+            left: Math.random() * 100 + "%",
+            top: -10 + "%",
+            background: `rgba(${colors.accent}, ${0.7 + Math.random() * 0.3})`,
+            boxShadow: `0 0 ${Math.random() * 8 + 4}px rgba(${colors.accent}, 0.6)`,
+          }}
+          animate={{
+            x: [0, Math.random() * 50 - 25, 0],
+            y: [0, "120vh"],
+            opacity: [0.8, 0.4],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "linear",
+          }}
+        />
+      ))}
+    </>
+  );
+
+  // Space: Stars & Orbs (original)
+  const renderSpaceEffects = () => (
+    <>
+      {/* Theme-specific effects */}
+      {renderThemeEffects()}
+    </>
+  );
 
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">

@@ -53,7 +53,20 @@ function Hero() {
       {/* Language Switch - Outside hero to avoid cursor issues */}
       <button
         onClick={switchLang}
-        className="fixed top-6 right-6 z-[10000] flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
+        className="fixed top-6 right-6 z-[10000] flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm border transition cursor-pointer"
+        style={{
+          backgroundColor: `rgba(${colors.primary}, 0.15)`,
+          borderColor: `rgba(${colors.accent}, 0.3)`,
+          color: `rgb(${colors.accent})`,
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = `rgba(${colors.primary}, 0.25)`;
+          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.5)`;
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = `rgba(${colors.primary}, 0.15)`;
+          e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+        }}
       >
         <Languages size={14} />
         {locale === "vi" ? "EN" : "VI"}
