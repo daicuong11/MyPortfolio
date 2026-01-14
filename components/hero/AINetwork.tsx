@@ -3,10 +3,30 @@
 import { useRef, useMemo, useEffect, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
-import { Text } from "@react-three/drei";
+import { Html } from "@react-three/drei";
+import { IconType } from "react-icons";
+import { 
+  SiReact, 
+  SiTypescript, 
+  SiTailwindcss, 
+  SiNextdotjs, 
+  SiDotnet,
+  SiPostgresql,
+  SiDocker,
+  SiGit,
+  SiRedux,
+  SiCloudinary,
+  SiNodedotjs,
+  SiMongodb,
+  SiPython,
+  SiJavascript,
+  SiGraphql
+} from "react-icons/si";
+import { FaMicrosoft, FaAws, FaFigma } from "react-icons/fa";
+import { TbBrandReact } from "react-icons/tb";
 
 type TechIcon = {
-  emoji: string;
+  icon: IconType;
   label: string;
   color: string;
 };
@@ -18,23 +38,27 @@ type Node = {
   tech: TechIcon;
 };
 
-// Danh sách các biểu tượng công nghệ IT
+// Danh sách các biểu tượng công nghệ IT - sử dụng icons từ SkillsSection
 const techIcons: TechIcon[] = [
-  { emoji: "🤖", label: "AI", color: "#00e5ff" },
-  { emoji: "☁️", label: "Cloud", color: "#4dd0e1" },
-  { emoji: "💾", label: "Database", color: "#26c6da" },
-  { emoji: "🔒", label: "Security", color: "#00acc1" },
-  { emoji: "⛓️", label: "Blockchain", color: "#0097a7" },
-  { emoji: "📱", label: "Mobile", color: "#00838f" },
-  { emoji: "🌐", label: "Web", color: "#006064" },
-  { emoji: "📡", label: "IoT", color: "#80deea" },
-  { emoji: "📊", label: "Analytics", color: "#26c6da" },
-  { emoji: "🧠", label: "ML", color: "#00e5ff" },
-  { emoji: "⚙️", label: "DevOps", color: "#4dd0e1" },
-  { emoji: "🔌", label: "API", color: "#00acc1" },
-  { emoji: "💫", label: "Quantum", color: "#80deea" },
-  { emoji: "📶", label: "5G", color: "#0097a7" },
-  { emoji: "🥽", label: "AR/VR", color: "#00e5ff" },
+  { icon: SiReact, label: "React", color: "#61dafb" },
+  { icon: SiTypescript, label: "TypeScript", color: "#3178c6" },
+  { icon: SiNextdotjs, label: "Next.js", color: "#ffffff" },
+  { icon: SiTailwindcss, label: "Tailwind", color: "#06b6d4" },
+  { icon: SiDotnet, label: ".NET", color: "#512bd4" },
+  { icon: SiNodedotjs, label: "Node.js", color: "#339933" },
+  { icon: SiPostgresql, label: "PostgreSQL", color: "#4169e1" },
+  { icon: SiMongodb, label: "MongoDB", color: "#47a248" },
+  { icon: SiDocker, label: "Docker", color: "#2496ed" },
+  { icon: SiGit, label: "Git", color: "#f05032" },
+  { icon: SiRedux, label: "Redux", color: "#764abc" },
+  { icon: SiPython, label: "Python", color: "#3776ab" },
+  { icon: SiJavascript, label: "JavaScript", color: "#f7df1e" },
+  { icon: SiGraphql, label: "GraphQL", color: "#e10098" },
+  { icon: FaAws, label: "AWS", color: "#ff9900" },
+  { icon: SiCloudinary, label: "Cloudinary", color: "#3448c5" },
+  { icon: FaMicrosoft, label: "Azure", color: "#0078d4" },
+  { icon: FaFigma, label: "Figma", color: "#f24e1e" },
+  { icon: TbBrandReact, label: "React Query", color: "#ff4154" },
 ];
 
 export default function AINetwork({ count = 40 }) {
@@ -151,7 +175,7 @@ export default function AINetwork({ count = 40 }) {
       });
     });
 
-    // Update node groups với scale effect khi hover
+    // Update node groups với scale effect và rotation khi hover
     nodesRef.current.forEach((group, i) => {
       if (group) {
         group.position.copy(nodes[i].position);
@@ -161,6 +185,18 @@ export default function AINetwork({ count = 40 }) {
         const isClicked = clickedNodeRef.current === i;
         const targetScale = isClicked ? 2.0 : isHovered ? 1.5 : 1;
         group.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.15);
+        
+        // Subtle rotation animation for cubes
+        if (group.children[0] && group.children[0] instanceof THREE.Mesh) {
+          const cube = group.children[0] as THREE.Mesh;
+          cube.rotation.x += 0.002;
+          cube.rotation.y += 0.002;
+        }
+        if (group.children[1] && group.children[1] instanceof THREE.Mesh) {
+          const wireframe = group.children[1] as THREE.Mesh;
+          wireframe.rotation.x += 0.002;
+          wireframe.rotation.y += 0.002;
+        }
       }
     });
 
@@ -183,11 +219,12 @@ export default function AINetwork({ count = 40 }) {
 
   return (
     <group>
-      {/* Tech Icon Nodes */}
+      {/* Tech Icon Nodes - Cubic Blocks */}
       {nodes.map((node, i) => {
         const isHovered = hoveredIndex === i;
         const isClicked = clickedNodeRef.current === i;
         const isActive = isHovered || isClicked;
+        const Icon = node.tech.icon;
         
         return (
           <group
@@ -220,56 +257,113 @@ export default function AINetwork({ count = 40 }) {
               }
             }}
           >
-            {/* Background glow sphere */}
-            <mesh>
-              <sphereGeometry args={[0.15, 16, 16]} />
+            {/* Cube container with glow */}
+            <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
+              <boxGeometry args={[0.3, 0.3, 0.3]} />
               <meshStandardMaterial
                 color={node.tech.color}
                 emissive={node.tech.color}
-                emissiveIntensity={isActive ? 1.5 : 0.5}
+                emissiveIntensity={isActive ? 1.2 : 0.4}
+                transparent
+                opacity={isActive ? 0.8 : 0.4}
+                metalness={0.5}
+                roughness={0.2}
+              />
+            </mesh>
+
+            {/* Inner cube wireframe */}
+            <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
+              <boxGeometry args={[0.32, 0.32, 0.32]} />
+              <meshBasicMaterial
+                color={node.tech.color}
+                wireframe
                 transparent
                 opacity={isActive ? 0.6 : 0.3}
               />
             </mesh>
 
-            {/* Tech Icon Emoji */}
-            <Text
-              fontSize={0.25}
-              color={isActive ? "#ffffff" : "#e0f7fa"}
-              anchorX="center"
-              anchorY="middle"
-              outlineWidth={0.01}
-              outlineColor={node.tech.color}
+            {/* Tech Icon using HTML */}
+            <Html
+              center
+              distanceFactor={8}
+              position={[0, 0, 0.2]}
+              style={{
+                pointerEvents: "none",
+                userSelect: "none",
+              }}
             >
-              {node.tech.emoji}
-            </Text>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: isActive ? "48px" : "36px",
+                  height: isActive ? "48px" : "36px",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <Icon
+                  size={isActive ? 32 : 24}
+                  style={{
+                    color: isActive ? "#ffffff" : node.tech.color,
+                    filter: `drop-shadow(0 0 ${isActive ? "12px" : "6px"} ${node.tech.color})`,
+                    transition: "all 0.3s ease",
+                  }}
+                />
+              </div>
+            </Html>
 
             {/* Label hiển thị khi hover */}
             {isActive && (
-              <Text
-                position={[0, -0.35, 0]}
-                fontSize={0.12}
-                color="#ffffff"
-                anchorX="center"
-                anchorY="middle"
-                outlineWidth={0.005}
-                outlineColor={node.tech.color}
+              <Html
+                center
+                distanceFactor={8}
+                position={[0, -0.4, 0]}
+                style={{
+                  pointerEvents: "none",
+                  userSelect: "none",
+                }}
               >
-                {node.tech.label}
-              </Text>
+                <div
+                  style={{
+                    padding: "4px 12px",
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
+                    border: `1px solid ${node.tech.color}`,
+                    borderRadius: "8px",
+                    fontSize: "12px",
+                    fontWeight: "600",
+                    color: "#ffffff",
+                    whiteSpace: "nowrap",
+                    boxShadow: `0 0 12px ${node.tech.color}`,
+                  }}
+                >
+                  {node.tech.label}
+                </div>
+              </Html>
             )}
 
-            {/* Outer ring khi hover */}
+            {/* Outer rotating ring khi hover */}
             {isActive && (
-              <mesh rotation={[Math.PI / 2, 0, 0]}>
-                <ringGeometry args={[0.2, 0.25, 32]} />
-                <meshBasicMaterial
-                  color={node.tech.color}
-                  transparent
-                  opacity={0.5}
-                  side={THREE.DoubleSide}
-                />
-              </mesh>
+              <>
+                <mesh rotation={[Math.PI / 2, 0, 0]}>
+                  <ringGeometry args={[0.35, 0.4, 32]} />
+                  <meshBasicMaterial
+                    color={node.tech.color}
+                    transparent
+                    opacity={0.6}
+                    side={THREE.DoubleSide}
+                  />
+                </mesh>
+                <mesh rotation={[0, Math.PI / 2, 0]}>
+                  <ringGeometry args={[0.35, 0.4, 32]} />
+                  <meshBasicMaterial
+                    color={node.tech.color}
+                    transparent
+                    opacity={0.4}
+                    side={THREE.DoubleSide}
+                  />
+                </mesh>
+              </>
             )}
           </group>
         );
