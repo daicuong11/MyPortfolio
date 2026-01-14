@@ -43,9 +43,19 @@ export default function ProjectPreviewPopup({
       
       const handleCanPlay = () => {
         setIsLoading(false);
-        video.play().catch(() => {
-          setIsPlaying(false);
-        });
+        // Try to play, but handle errors gracefully
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsPlaying(true);
+            })
+            .catch((error) => {
+              // Browser prevented autoplay (common on mobile/background tabs)
+              console.log("Autoplay prevented:", error.name);
+              setIsPlaying(false);
+            });
+        }
       };
       
       video.addEventListener('canplaythrough', handleCanPlay);
@@ -91,7 +101,8 @@ export default function ProjectPreviewPopup({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md"
+            onClick={onClose}
+            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md cursor-pointer"
           />
 
           {/* Popup Container */}
@@ -129,6 +140,7 @@ export default function ProjectPreviewPopup({
                 opacity: { duration: 0.3 },
                 filter: { duration: 0.3 }
               }}
+              onClick={(e) => e.stopPropagation()}
               style={{
                 transformStyle: "preserve-3d",
                 perspective: 1000
@@ -243,7 +255,7 @@ export default function ProjectPreviewPopup({
                     src={videoUrl}
                     className="w-full h-full object-cover"
                     loop
-                    muted
+                    muted={isMuted}
                     playsInline
                     preload="auto"
                     initial={{ scale: 1.1, opacity: 0 }}
@@ -275,8 +287,17 @@ export default function ProjectPreviewPopup({
                               videoRef.current.pause();
                               setIsPlaying(false);
                             } else {
-                              videoRef.current.play();
-                              setIsPlaying(true);
+                              const playPromise = videoRef.current.play();
+                              if (playPromise !== undefined) {
+                                playPromise
+                                  .then(() => {
+                                    setIsPlaying(true);
+                                  })
+                                  .catch((error) => {
+                                    console.log("Play prevented:", error.name);
+                                    setIsPlaying(false);
+                                  });
+                              }
                             }
                           }
                         }}
@@ -347,8 +368,17 @@ export default function ProjectPreviewPopup({
                         onClick={() => {
                           if (videoRef.current) {
                             videoRef.current.currentTime = 0;
-                            videoRef.current.play();
-                            setIsPlaying(true);
+                            const playPromise = videoRef.current.play();
+                            if (playPromise !== undefined) {
+                              playPromise
+                                .then(() => {
+                                  setIsPlaying(true);
+                                })
+                                .catch((error) => {
+                                  console.log("Restart play prevented:", error.name);
+                                  setIsPlaying(false);
+                                });
+                            }
                           }
                         }}
                         className="group relative w-10 h-10 flex items-center justify-center rounded-full border transition-all duration-300 cursor-pointer"
@@ -373,8 +403,8 @@ export default function ProjectPreviewPopup({
                       </motion.button>
                     </div>
 
-                    {/* Esc hint */}
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                    {/* Esc hint - Hidden on mobile */}
+                    <div className="hidden md:flex items-center gap-2 text-xs text-gray-400">
                       <kbd 
                         className="px-2 py-1 rounded-lg bg-white/10 border text-[10px] font-mono font-medium"
                         style={{ 
@@ -384,7 +414,7 @@ export default function ProjectPreviewPopup({
                       >
                         Esc
                       </kbd>
-                      <span className="hidden sm:inline">
+                      <span>
                         {t.projects.previewTip || "Press to exit"}
                       </span>
                     </div>
