@@ -46,60 +46,56 @@ function Hero() {
   };
 
   return (
-    <section className="relative w-full h-screen bg-black overflow-hidden hero-cursor-area">
-      {/* Custom Cursor */}
-      <CustomCursor />
-      
-      {/* Enhanced Background Layers - Theme Based */}
-      <div className="absolute inset-0">
-        {currentTheme === "space" && (
-          <>
-            <SpaceScene />
-            <AuroraBackground />
-          </>
-        )}
-        {currentTheme === "spring" && (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-pink-950 via-pink-900/50 to-black" />
-            <SpringBackground />
-          </>
-        )}
-        {currentTheme === "summer" && (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-yellow-950 via-orange-900/50 to-black" />
-            <SummerBackground />
-          </>
-        )}
-        {currentTheme === "autumn" && (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-orange-950 via-amber-900/50 to-black" />
-            <AutumnBackground />
-          </>
-        )}
-        {currentTheme === "winter" && (
-          <>
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-cyan-900/50 to-black" />
-            <WinterBackground />
-          </>
-        )}
-      </div>
-
-      {/* Theme Selector */}
+    <>
+      {/* Theme Selector - Outside hero to avoid cursor issues */}
       <ThemeSelector />
 
-      {/* Language Switch */}
+      {/* Language Switch - Outside hero to avoid cursor issues */}
       <button
         onClick={switchLang}
-        className="fixed top-6 right-6 z-40 flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
-        style={{ 
-          cursor: 'pointer',
-          pointerEvents: 'auto',
-          isolation: 'isolate'
-        }}
+        className="fixed top-6 right-6 z-[10000] flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
       >
         <Languages size={14} />
         {locale === "vi" ? "EN" : "VI"}
       </button>
+
+      <section className="relative w-full h-screen bg-black overflow-hidden hero-cursor-area">
+        {/* Custom Cursor */}
+        <CustomCursor />
+        
+        {/* Enhanced Background Layers - Theme Based */}
+        <div className="absolute inset-0">
+          {currentTheme === "space" && (
+            <>
+              <SpaceScene />
+              <AuroraBackground />
+            </>
+          )}
+          {currentTheme === "spring" && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-b from-pink-950 via-pink-900/50 to-black" />
+              <SpringBackground />
+            </>
+          )}
+          {currentTheme === "summer" && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-b from-yellow-950 via-orange-900/50 to-black" />
+              <SummerBackground />
+            </>
+          )}
+          {currentTheme === "autumn" && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-b from-orange-950 via-amber-900/50 to-black" />
+              <AutumnBackground />
+            </>
+          )}
+          {currentTheme === "winter" && (
+            <>
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-950 via-cyan-900/50 to-black" />
+              <WinterBackground />
+            </>
+          )}
+        </div>
 
       {/* Overlay content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
@@ -123,7 +119,20 @@ function Hero() {
           <a
             href={cvFile}
             target="_blank"
-            className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition"
+            className="flex items-center gap-2 px-6 py-3 rounded-full backdrop-blur-md border transition"
+            style={{
+              backgroundColor: `rgba(${colors.primary}, 0.1)`,
+              borderColor: `rgba(${colors.accent}, 0.3)`,
+              color: `rgb(${colors.accent})`,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = `rgba(${colors.primary}, 0.2)`;
+              e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.6)`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = `rgba(${colors.primary}, 0.1)`;
+              e.currentTarget.style.borderColor = `rgba(${colors.accent}, 0.3)`;
+            }}
           >
             <Eye size={16} />
             {t.hero.previewCV}
@@ -133,7 +142,19 @@ function Hero() {
           <a
             href={cvFile}
             download
-            className="flex items-center gap-2 px-6 py-3 rounded-full bg-cyan-400 text-black font-semibold hover:bg-cyan-300 transition"
+            className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition"
+            style={{
+              backgroundColor: `rgb(${colors.accent})`,
+              color: currentTheme === 'winter' || currentTheme === 'space' ? '#000' : '#fff',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'scale(1.05)';
+              e.currentTarget.style.boxShadow = `0 10px 30px rgba(${colors.accent}, 0.4)`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'scale(1)';
+              e.currentTarget.style.boxShadow = 'none';
+            }}
           >
             <Download size={16} />
             {t.hero.downloadCV}
@@ -165,7 +186,8 @@ function Hero() {
           }}
         />
       </div>
-    </section>
+      </section>
+    </>
   );
 }
 

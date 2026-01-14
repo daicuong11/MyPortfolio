@@ -21,7 +21,7 @@ function ContactSection() {
   const cvFile = getFileUrl(cvFileName);
 
   return (
-    <section className="relative py-40 px-6 bg-black overflow-hidden">
+    <section id="contact" className="relative py-40 px-6 bg-black overflow-hidden">
       {/* Cosmic Background */}
       <CosmicBackground intensity="strong" />
       

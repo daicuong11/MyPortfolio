@@ -25,11 +25,7 @@ export default function ThemeSelector() {
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed top-6 left-6 z-40 flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
-        style={{ 
-          cursor: 'pointer',
-          pointerEvents: 'auto',
-        }}
+        className="fixed top-6 left-6 z-[10000] flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-full backdrop-blur-sm bg-white/10 border border-white/20 text-cyan-300 hover:bg-cyan-400/20 transition cursor-pointer"
       >
         <Palette size={14} />
         <span className="hidden sm:inline">
@@ -47,7 +43,7 @@ export default function ThemeSelector() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] cursor-pointer"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100001] cursor-pointer"
             />
 
             {/* Popup */}
@@ -56,7 +52,7 @@ export default function ThemeSelector() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[9999] w-[90%] max-w-2xl"
+              className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100002] w-[90%] max-w-2xl"
             >
               <div className="relative bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-xl border-2 border-cyan-400/30 rounded-3xl p-8 shadow-[0_0_80px_rgba(6,182,212,0.3)]">
                 {/* Close button */}

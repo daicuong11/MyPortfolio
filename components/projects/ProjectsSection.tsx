@@ -12,7 +12,7 @@ function ProjectsSection() {
   const { colors, getTitleGradient } = useThemeColors();
 
   return (
-    <section className="relative py-32 px-6 bg-gradient-to-b from-[#050a1a] to-black overflow-hidden">
+    <section id="projects" className="relative py-32 px-6 bg-gradient-to-b from-[#050a1a] to-black overflow-hidden">
         {/* Cosmic Background */}
         <CosmicBackground intensity="medium" />
         

@@ -74,7 +74,8 @@ function Footer() {
                 <motion.a
                   key={social.icon}
                   href={social.link}
-                  target="_blank"
+                  target={social.icon === "email" ? "_self" : "_blank"}
+                  rel={social.icon !== "email" ? "noopener noreferrer" : undefined}
                   initial={{ opacity: 0, scale: 0.8 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.1 }}
@@ -125,11 +126,18 @@ function Footer() {
                 <motion.a
                   key={link.label}
                   href={link.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const element = document.querySelector(link.href);
+                    if (element) {
+                      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
                   whileHover={{ x: 4, color: "#22d3ee" }}
-                  className="block text-sm text-gray-400 hover:text-cyan-300 transition-all duration-200"
+                  className="block text-sm text-gray-400 hover:text-cyan-300 transition-all duration-200 cursor-pointer"
                 >
                   → {link.label}
                 </motion.a>

@@ -49,6 +49,17 @@ body {
   cursor: none !important;
 }
 
+/* But keep cursor for fixed elements outside hero (z-index >= 10000) */
+.fixed[style*="z-index: 10000"],
+.fixed.z-\[10000\] {
+  cursor: pointer !important;
+}
+
+.fixed[style*="z-index: 10000"] *,
+.fixed.z-\[10000\] * {
+  cursor: pointer !important;
+}
+
 /* Prevent unwanted scroll in projects section */
 section {
   overflow-x: hidden;

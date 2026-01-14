@@ -11,7 +11,7 @@ function SkillsSection() {
   const { colors, getTitleGradient, getGlowStyle, getBorderStyle, getHoverBorderStyle, getHoverShadowStyle } = useThemeColors();
 
   return (
-    <section className="relative py-32 px-6 bg-gradient-to-b from-black to-[#050a1a] overflow-hidden">
+    <section id="skills" className="relative py-32 px-6 bg-gradient-to-b from-black to-[#050a1a] overflow-hidden">
 
       {/* cinematic light blobs - themed */}
       <div 
