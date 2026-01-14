@@ -91,9 +91,9 @@ function ContactSection() {
               />
               
               {/* Content */}
-              <div className="relative z-10">
+              <div className="relative z-10 flex items-start gap-3">
                 <div 
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                     borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -101,10 +101,12 @@ function ContactSection() {
                 >
                   <Mail style={{ color: `rgba(${colors.accent}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.email.label}</h3>
-                <p className="text-sm md:text-lg font-semibold text-white transition-colors break-all group-hover:scale-105">
-                  {t.contact.email.value}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.email.label}</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold text-white transition-colors break-words leading-tight">
+                    {t.contact.email.value}
+                  </p>
+                </div>
               </div>
               
               {/* Corner accent */}
@@ -148,9 +150,9 @@ function ContactSection() {
               />
               
               {/* Content */}
-              <div className="relative z-10">
+              <div className="relative z-10 flex items-start gap-3">
                 <div 
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.secondary}, 0.2), rgba(${colors.accent}, 0.2))`,
                     borderColor: `rgba(${colors.secondary}, 0.3)`,
@@ -158,10 +160,12 @@ function ContactSection() {
                 >
                   <Github style={{ color: `rgba(${colors.secondary}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.github.label}</h3>
-                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
-                  {t.contact.github.value}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.github.label}</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold text-white transition-colors break-words leading-tight">
+                    {t.contact.github.value}
+                  </p>
+                </div>
               </div>
               
               {/* Corner accent */}
@@ -205,9 +209,9 @@ function ContactSection() {
               />
               
               {/* Content */}
-              <div className="relative z-10">
+              <div className="relative z-10 flex items-start gap-3">
                 <div 
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.primary}, 0.2), rgba(${colors.accent}, 0.2))`,
                     borderColor: `rgba(${colors.primary}, 0.3)`,
@@ -215,10 +219,12 @@ function ContactSection() {
                 >
                   <Linkedin style={{ color: `rgba(${colors.primary}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.linkedin.label}</h3>
-                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
-                  {t.contact.linkedin.value}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.linkedin.label}</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold text-white transition-colors break-words leading-tight">
+                    {t.contact.linkedin.value}
+                  </p>
+                </div>
               </div>
               
               {/* Corner accent */}
@@ -262,9 +268,9 @@ function ContactSection() {
               />
               
               {/* Content */}
-              <div className="relative z-10">
+              <div className="relative z-10 flex items-start gap-3">
                 <div 
-                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-xl border flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300"
                   style={{
                     backgroundImage: `linear-gradient(135deg, rgba(${colors.accent}, 0.2), rgba(${colors.primary}, 0.2))`,
                     borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -272,10 +278,12 @@ function ContactSection() {
                 >
                   <Eye style={{ color: `rgba(${colors.accent}, 0.9)` }} className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.previewCV.label}</h3>
-                <p className="text-sm md:text-lg font-semibold text-white transition-colors">
-                  {t.contact.previewCV.value}
-                </p>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-xs md:text-sm font-medium text-gray-400 mb-1">{t.contact.previewCV.label}</h3>
+                  <p className="text-xs sm:text-sm md:text-base font-semibold text-white transition-colors break-words leading-tight">
+                    {t.contact.previewCV.value}
+                  </p>
+                </div>
               </div>
               
               {/* Corner accent */}

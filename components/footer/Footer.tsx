@@ -187,16 +187,16 @@ function Footer() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             {/* Copyright */}
-            <p className="text-sm text-gray-500">
+            <p className="text-xs sm:text-sm text-gray-500 text-center md:text-left">
               {t.footer.copyright}
             </p>
 
             {/* Tech signature with badge */}
-            <div className="flex items-center gap-3">
-              <span className="px-3 py-1 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 text-green-300 text-xs font-medium">
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+              <span className="px-3 py-1 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 text-green-300 text-xs font-medium whitespace-nowrap">
                 ● {t.footer.status.online}
               </span>
-              <span className="text-xs text-gray-500 tracking-wider uppercase">
+              <span className="text-xs text-gray-500 tracking-wider uppercase text-center">
                 {t.footer.techSignature}
               </span>
             </div>
@@ -206,7 +206,7 @@ function Footer() {
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               whileHover={{ y: -4 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex items-center gap-2 px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-300 cursor-pointer"
+              className="group flex items-center gap-2 px-4 py-2 rounded-xl border text-xs sm:text-sm font-medium transition-all duration-300 cursor-pointer"
               style={{
                 backgroundImage: `linear-gradient(90deg, rgba(${colors.primary}, 0.2), rgba(${colors.secondary}, 0.2))`,
                 borderColor: `rgba(${colors.accent}, 0.3)`,
@@ -221,10 +221,10 @@ function Footer() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              <svg className="w-4 h-4 group-hover:-translate-y-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 group-hover:-translate-y-1 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
               </svg>
-              {t.footer.backToTop}
+              <span className="hidden sm:inline">{t.footer.backToTop}</span>
             </motion.button>
           </div>
         </motion.div>
