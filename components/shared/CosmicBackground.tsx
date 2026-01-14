@@ -184,151 +184,238 @@ export default function CosmicBackground({
     </>
   );
 
-  // Space: Stars & Orbs (original)
+  // Space: Stars & Orbs (original cosmic effects)
   const renderSpaceEffects = () => (
     <>
-      {/* Theme-specific effects */}
-      {renderThemeEffects()}
+      {/* Floating orbs */}
+      {mounted && [...Array(8)].map((_, i) => (
+        <motion.div
+          key={`orb-${i}`}
+          className="absolute rounded-full"
+          style={{
+            width: Math.random() * 3 + 1 + "px",
+            height: Math.random() * 3 + 1 + "px",
+            left: Math.random() * 100 + "%",
+            top: Math.random() * 100 + "%",
+            background: `rgba(${colors.accent}, ${0.6 + Math.random() * 0.4})`,
+            boxShadow: `0 0 ${Math.random() * 10 + 5}px rgba(${colors.accent}, 0.8)`,
+          }}
+          animate={{
+            y: [0, Math.random() * 100 - 50, 0],
+            x: [0, Math.random() * 50 - 25, 0],
+            opacity: [0.3, 0.8, 0.3],
+          }}
+          transition={{
+            duration: Math.random() * 10 + 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
     </>
   );
 
+  // Render base gradients based on theme
+  const renderBaseGradients = () => {
+    switch (currentTheme) {
+      case "spring":
+        return (
+          <>
+            {/* Soft pink aurora */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.5}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 70% -10%, rgba(${colors.secondary}, ${opacityMultiplier * 1.5}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.5}), transparent 60%)`,
+                ],
+              }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            {/* Pink glow orbs */}
+            {[...Array(2)].map((_, i) => (
+              <motion.div
+                key={`glow-${i}`}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: "300px",
+                  height: "300px",
+                  left: `${30 + i * 40}%`,
+                  top: `${20 + i * 50}%`,
+                  background: `radial-gradient(circle, rgba(${colors.primary}, ${opacityMultiplier * 0.6}), transparent)`,
+                }}
+                animate={{
+                  x: [-20, 20, -20],
+                  y: [-20, 20, -20],
+                  opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{ duration: 15 + i * 5, repeat: Infinity, ease: "easeInOut" }}
+              />
+            ))}
+          </>
+        );
+      
+      case "summer":
+        return (
+          <>
+            {/* Golden sun rays */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={`ray-${i}`}
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(${60 + i * 60}deg, 
+                    transparent 45%, 
+                    rgba(${colors.accent}, ${opacityMultiplier * 0.5}) 50%, 
+                    transparent 55%)`,
+                }}
+                animate={{ opacity: [0, 0.4, 0] }}
+                transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 2 }}
+              />
+            ))}
+            {/* Warm glow */}
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                background: `radial-gradient(circle at 50% 30%, rgba(${colors.primary}, ${opacityMultiplier * 1.2}), transparent 60%)`,
+              }}
+              animate={{ opacity: [0.4, 0.6, 0.4] }}
+              transition={{ duration: 10, repeat: Infinity }}
+            />
+          </>
+        );
+      
+      case "autumn":
+        return (
+          <>
+            {/* Warm gradient waves */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  `radial-gradient(ellipse 70% 50% at 20% 20%, rgba(${colors.primary}, ${opacityMultiplier * 1.3}), transparent 50%)`,
+                  `radial-gradient(ellipse 70% 50% at 80% 20%, rgba(${colors.secondary}, ${opacityMultiplier * 1.3}), transparent 50%)`,
+                  `radial-gradient(ellipse 70% 50% at 20% 20%, rgba(${colors.primary}, ${opacityMultiplier * 1.3}), transparent 50%)`,
+                ],
+              }}
+              transition={{ duration: 18, repeat: Infinity }}
+            />
+            {/* Warm glows */}
+            {[...Array(2)].map((_, i) => (
+              <motion.div
+                key={`glow-${i}`}
+                className="absolute rounded-full blur-3xl"
+                style={{
+                  width: "250px",
+                  height: "250px",
+                  left: `${25 + i * 50}%`,
+                  top: `${30 + i * 30}%`,
+                  background: `radial-gradient(circle, rgba(${i === 0 ? colors.primary : colors.secondary}, ${opacityMultiplier * 0.7}), transparent)`,
+                }}
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.4, 0.6, 0.4],
+                }}
+                transition={{ duration: 12 + i * 4, repeat: Infinity }}
+              />
+            ))}
+          </>
+        );
+      
+      case "winter":
+        return (
+          <>
+            {/* Cool blue aurora */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  `radial-gradient(ellipse 80% 60% at 40% 10%, rgba(${colors.accent}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 60% 10%, rgba(${colors.primary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 40% 10%, rgba(${colors.accent}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                ],
+              }}
+              transition={{ duration: 15, repeat: Infinity }}
+            />
+            {/* Ice crystal glows */}
+            {[...Array(3)].map((_, i) => (
+              <motion.div
+                key={`ice-${i}`}
+                className="absolute rounded-full blur-2xl"
+                style={{
+                  width: "200px",
+                  height: "200px",
+                  left: `${20 + i * 30}%`,
+                  top: `${15 + i * 35}%`,
+                  background: `radial-gradient(circle, rgba(${colors.accent}, ${opacityMultiplier * 0.5}), transparent)`,
+                }}
+                animate={{
+                  scale: [1, 1.15, 1],
+                  opacity: [0.3, 0.6, 0.3],
+                }}
+                transition={{ duration: 10 + i * 3, repeat: Infinity }}
+              />
+            ))}
+          </>
+        );
+      
+      case "space":
+      default:
+        return (
+          <>
+            {/* Aurora waves */}
+            <motion.div
+              className="absolute inset-0"
+              animate={{
+                background: [
+                  `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 70% -10%, rgba(${colors.secondary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                  `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
+                ],
+              }}
+              transition={{ duration: 18, repeat: Infinity }}
+            />
+            {/* Nebula clouds */}
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                background: `radial-gradient(circle at 60% 40%, rgba(${colors.secondary}, ${opacityMultiplier * 0.8}), transparent 50%), 
+                             radial-gradient(circle at 30% 70%, rgba(${colors.primary}, ${opacityMultiplier * 0.6}), transparent 50%)`,
+              }}
+              animate={{
+                scale: [1, 1.1, 1],
+                opacity: [0.4, 0.7, 0.4],
+              }}
+              transition={{ duration: 20, repeat: Infinity }}
+            />
+            {/* Light rays */}
+            {[...Array(2)].map((_, i) => (
+              <motion.div
+                key={`ray-${i}`}
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(${45 + i * 90}deg, 
+                    transparent 40%, 
+                    rgba(${colors.primary}, ${opacityMultiplier * 0.4}) 50%, 
+                    transparent 60%)`,
+                }}
+                animate={{ opacity: [0, 0.25, 0] }}
+                transition={{ duration: 12, repeat: Infinity, delay: i * 6 }}
+              />
+            ))}
+          </>
+        );
+    }
+  };
+
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {/* Aurora waves - Optimized */}
-      <motion.div
-        className="absolute inset-0"
-        style={{ willChange: "opacity" }}
-        animate={{
-          background: [
-            `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
-            `radial-gradient(ellipse 80% 60% at 70% -10%, rgba(${colors.secondary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
-            `radial-gradient(ellipse 80% 60% at 30% -10%, rgba(${colors.primary}, ${opacityMultiplier * 1.8}), transparent 60%)`,
-          ],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
+      {/* Base gradients and glows - theme specific */}
+      {renderBaseGradients()}
 
-      {/* Flowing energy streams - Optimized, reduced animation */}
-      {[...Array(2)].map((_, i) => (
-        <motion.div
-          key={`stream-${i}`}
-          className="absolute inset-0"
-          style={{
-            background: `radial-gradient(ellipse 70% 50% at ${40 + i * 30}% ${30}%, 
-              rgba(${colors.primary}, ${opacityMultiplier * 1.2}), 
-              transparent 70%)`,
-            willChange: "transform, opacity",
-          }}
-          animate={{
-            x: ["-5%", "5%", "-5%"],
-            opacity: [0.3, 0.5, 0.3],
-          }}
-          transition={{
-            duration: 25 + i * 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 4,
-          }}
-        />
-      ))}
-
-      {/* Glowing orbs - Reduced blur, simplified animation */}
-      {[...Array(2)].map((_, i) => (
-        <motion.div
-          key={`orb-${i}`}
-          className="absolute rounded-full blur-2xl"
-          style={{
-            width: `${250 + i * 120}px`,
-            height: `${250 + i * 120}px`,
-            left: `${20 + i * 40}%`,
-            top: `${25 + i * 30}%`,
-            background: `radial-gradient(circle, rgba(${i % 2 === 0 ? colors.primary : colors.secondary}, ${opacityMultiplier * 1}), transparent 70%)`,
-            willChange: "transform, opacity",
-          }}
-          animate={{
-            x: [-30, 30, -30],
-            opacity: [0.4, 0.6, 0.4],
-          }}
-          transition={{
-            duration: 20 + i * 8,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: i * 3,
-          }}
-        />
-      ))}
-
-      {/* Floating particles - client-only (reduced from 15 to 8) */}
-      {mounted && [...Array(8)].map((_, i) => (
-        <motion.div
-          key={`particle-${i}`}
-          className="absolute w-1 h-1 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            background: `rgba(${colors.accent}, ${opacityMultiplier * 8})`,
-            boxShadow: `0 0 8px rgba(${colors.accent}, ${opacityMultiplier * 10})`,
-          }}
-          animate={{
-            y: [0, -100, 0],
-            opacity: [0, 0.8, 0],
-            scale: [0.5, 1.2, 0.5],
-          }}
-          transition={{
-            duration: 5 + Math.random() * 5,
-            repeat: Infinity,
-            delay: Math.random() * 5,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
-
-      {/* Nebula clouds */}
-      <motion.div
-        className="absolute inset-0"
-        style={{
-          background: `radial-gradient(circle at 60% 40%, rgba(${colors.secondary}, ${opacityMultiplier * 0.8}), transparent 50%), 
-                       radial-gradient(circle at 30% 70%, rgba(${colors.primary}, ${opacityMultiplier * 0.6}), transparent 50%)`,
-        }}
-        animate={{
-          scale: [1, 1.1, 1],
-          opacity: [0.4, 0.7, 0.4],
-          rotate: [0, 5, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-
-      {/* Light rays - Reduced to 2, optimized */}
-      {[...Array(2)].map((_, i) => (
-        <motion.div
-          key={`ray-${i}`}
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(${45 + i * 90}deg, 
-              transparent 40%, 
-              rgba(${colors.primary}, ${opacityMultiplier * 0.4}) 50%, 
-              transparent 60%)`,
-            willChange: "opacity",
-          }}
-          animate={{
-            opacity: [0, 0.25, 0],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            delay: i * 6,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+      {/* Theme-specific particle effects */}
+      {renderThemeEffects()}
     </div>
   );
 }
