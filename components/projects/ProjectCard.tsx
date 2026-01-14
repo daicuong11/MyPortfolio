@@ -45,7 +45,7 @@ function ProjectCard({ project }: ProjectCardProps) {
     if (progressIntervalRef.current) {
       clearInterval(progressIntervalRef.current);
       progressIntervalRef.current = null;
-    }
+      }
   }, []);
 
   const handleThumbnailEnter = useCallback(async () => {
@@ -54,14 +54,14 @@ function ProjectCard({ project }: ProjectCardProps) {
       return;
     }
 
-    setIsHoveringThumbnail(true);
-    setIsLoading(true);
-    setProgress(0);
+      setIsHoveringThumbnail(true);
+      setIsLoading(true);
+      setProgress(0);
     setVideoReady(false);
     isOpeningRef.current = true;
     preloadStartTimeRef.current = Date.now();
-    
-    // Clear any existing timeouts
+      
+      // Clear any existing timeouts
     clearAllTimeouts();
 
     // Start video preloading in parallel
@@ -97,15 +97,15 @@ function ProjectCard({ project }: ProjectCardProps) {
           setTimeout(() => {
             // Only open if still hovering/loading
             if (isOpeningRef.current) {
-              setIsPreviewOpen(true);
-              setIsLoading(false);
+            setIsPreviewOpen(true);
+            setIsLoading(false);
               isOpeningRef.current = false;
-            }
+          }
           }, remainingTime);
         });
-      }
-    };
-    
+    }
+  };
+
     animate();
   }, [project.video, isPreviewOpen, clearAllTimeouts]);
 
@@ -236,7 +236,7 @@ function ProjectCard({ project }: ProjectCardProps) {
               Ready
             </motion.div>
           )}
-
+          
           {/* Hover indicator with progress bar */}
           {project.video && (
             <motion.div 
@@ -307,8 +307,8 @@ function ProjectCard({ project }: ProjectCardProps) {
               WebkitTextFillColor: "transparent",
             }}
           >
-            {project.title}
-          </h3>
+          {project.title}
+        </h3>
         </div>
 
         <p className="text-sm text-gray-400 group-hover:text-gray-300 mb-5 leading-relaxed transition-colors">

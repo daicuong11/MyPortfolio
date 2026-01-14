@@ -31,7 +31,7 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className="bg-black text-white overflow-x-hidden">
         <ClientProviders>
-          {children}
+        {children}
         </ClientProviders>
       </body>
     </html>

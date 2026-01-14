@@ -15,7 +15,7 @@ function Footer() {
       <div className="absolute top-0 left-0 right-0 h-[2px] overflow-hidden">
         <div 
           className="absolute inset-0"
-          style={{
+            style={{
             backgroundImage: `linear-gradient(90deg, transparent, rgba(${colors.accent}, 0.4), transparent)`,
           }}
         />
@@ -38,17 +38,17 @@ function Footer() {
         <div 
           className="absolute -bottom-20 right-1/4 w-[400px] h-[400px] rounded-full blur-3xl"
           style={{ backgroundColor: `rgba(${colors.secondary}, 0.05)` }}
-        />
+          />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="grid md:grid-cols-3 gap-12 mb-12"
-        >
+      >
           {/* Brand section */}
           <div className="space-y-4">
             <motion.h2
@@ -58,8 +58,8 @@ function Footer() {
                 ...getTitleGradient(),
                 filter: `drop-shadow(0 0 16px rgba(${colors.primary}, 0.6))`,
               }}
-            >
-              {t.footer.name}
+        >
+          {t.footer.name}
             </motion.h2>
             <p className="text-sm text-gray-400 leading-relaxed max-w-xs">
               {t.footer.description}
@@ -186,10 +186,10 @@ function Footer() {
           className="pt-8 border-t border-white/10"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Copyright */}
+        {/* Copyright */}
             <p className="text-xs sm:text-sm text-gray-500 text-center md:text-left">
-              {t.footer.copyright}
-            </p>
+          {t.footer.copyright}
+        </p>
 
             {/* Tech signature with badge */}
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
@@ -227,7 +227,7 @@ function Footer() {
               <span className="hidden sm:inline">{t.footer.backToTop}</span>
             </motion.button>
           </div>
-        </motion.div>
+      </motion.div>
       </div>
     </footer>
   );

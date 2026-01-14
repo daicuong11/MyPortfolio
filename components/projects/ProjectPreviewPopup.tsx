@@ -455,11 +455,11 @@ export default function ProjectPreviewPopup({
                           color: `rgba(${colors.accent}, 0.9)`,
                         }}
                       >
-                        Esc
-                      </kbd>
-                      <span>
+                      Esc
+                    </kbd>
+                    <span>
                         {t.projects.previewTip || "Press to exit"}
-                      </span>
+                    </span>
                     </div>
                   </div>
                 </motion.div>
@@ -483,7 +483,7 @@ export default function ProjectPreviewPopup({
                       <span className="text-sm font-medium" style={{ color: `rgba(${colors.accent}, 0.9)` }}>
                         {t.projects.loadingVideo}
                       </span>
-                    </div>
+              </div>
                   </motion.div>
                 )}
 
