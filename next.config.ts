@@ -6,9 +6,7 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true, // Required for static export
   },
-  // Only use basePath when building for GitHub Pages
-  // For local development, basePath will be empty
-  basePath: process.env.GITHUB_PAGES === "true" ? "/MyPortfolio" : "",
+  // basePath removed - using custom domain (no subdirectory needed)
   trailingSlash: true,
 };
 
