@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: "*",
       allow: "/",
     },
-    sitemap: "https://daicuong11.github.io/MyPortfolio/sitemap.xml",
+    sitemap: "https://lydaicuong.me/sitemap.xml",
   };
 }
