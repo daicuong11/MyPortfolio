@@ -9,6 +9,11 @@ import {
   SiNextdotjs,
   SiGit,
   SiDocker,
+  SiMongodb,
+  SiMysql,
+  SiDart,
+  SiExpress,
+  SiBlazor,
 } from "react-icons/si";
 import { FaMicrosoft } from "react-icons/fa6";
 import { TbBrandReact } from "react-icons/tb";
@@ -35,12 +40,26 @@ const vi = {
           { name: "Redux Toolkit", icon: SiRedux },
           { name: "TanStack Query", icon: TbBrandReact },
           { name: "Next.js", icon: SiNextdotjs },
+          { name: "Blazor", icon: SiBlazor },
         ],
       },
       {
         title: "Backend",
         items: [
-          { name: ".NET / ASP.NET Core", icon: SiDotnet },
+          { name: ".NET Core", icon: SiDotnet },
+          { name: "ASP.NET Core", icon: SiDotnet },
+          { name: "Entity Framework", icon: SiDotnet },
+          { name: "ABP Framework", icon: SiDotnet },
+          { name: "Express.js", icon: SiExpress },
+        ],
+      },
+      {
+        title: "Ngôn ngữ",
+        items: [
+          { name: "C#", icon: SiDotnet },
+          { name: "Java", icon: SiReact },
+          { name: "Dart", icon: SiDart },
+          { name: "JavaScript", icon: SiReact },
         ],
       },
       {
@@ -48,14 +67,16 @@ const vi = {
         items: [
           { name: "PostgreSQL", icon: SiPostgresql },
           { name: "SQL Server", icon: FaMicrosoft },
+          { name: "MongoDB", icon: SiMongodb },
+          { name: "MySQL", icon: SiMysql },
         ],
       },
       {
-        title: "Tools & DevOps",
+        title: "Tools & Khác",
         items: [
           { name: "Cloudinary", icon: SiCloudinary },
           { name: "Git", icon: SiGit },
-          { name: "Docker", icon: SiDocker },
+          { name: "GitHub", icon: SiGit },
         ],
       },
     ],
@@ -66,34 +87,34 @@ const vi = {
     title: "Dự án nổi bật",
     items: [
       {
-        title: "Nền tảng E-Commerce AI",
+        title: "Ajinomoto VNTT - eSales DMS Solution",
         description:
-          "Nền tảng thương mại điện tử hiện đại với đề xuất sản phẩm dựa trên AI và giao diện hiệu suất cao.",
-        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80",
+          "Dự án DMS doanh nghiệp được xây dựng trên HQSOFT's Xspire Business Platform với eSales DMS Solution, giúp Ajinomoto tối ưu hóa phân phối, cải thiện hiệu quả bán hàng và giám sát hoạt động kinh doanh hiệu quả.",
+        image: "/projects/ecommerce.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        tech: ["Next.js", "Tailwind", ".NET", "PostgreSQL"],
+        tech: ["ABP Framework", ".NET Core 9", "C#", "Entity Framework", "Blazor", "DevExpress", "PostgreSQL"],
         demo: "#",
         github: "#",
       },
       {
-        title: "Quản lý công việc thông minh",
+        title: "Sabeco AMS",
         description:
-          "Hệ thống quản lý công việc với cộng tác thời gian thực và phân tích năng suất.",
-        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop&q=80",
+          "Dự án phần mềm doanh nghiệp tập trung vào quản lý phân phối và tự động hóa lực lượng bán hàng, được xây dựng để tối ưu hóa quy trình kinh doanh.",
+        image: "/projects/portfolio.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        tech: ["React", "Redux Toolkit", "ASP.NET Core", "SQL Server"],
+        tech: ["ASP.NET MVC", "Razor", "Ext.NET", "C#", "JavaScript", "SQL Server"],
         demo: "#",
         github: "#",
       },
       {
-        title: "Portfolio AI Space",
+        title: "AI Space Portfolio",
         description:
-          "Portfolio cá nhân theo phong cách điện ảnh với không gian 3D và giao diện hologram.",
-        image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=600&fit=crop&q=80",
+          "Portfolio cá nhân theo phong cách điện ảnh với không gian 3D và giao diện hologram, thể hiện kỹ năng phát triển web hiện đại.",
+        image: "/projects/ai-chat.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        tech: ["Next.js", "Three.js", "Framer Motion"],
-        demo: "#",
-        github: "#",
+        tech: ["Next.js", "Three.js", "Framer Motion", "TypeScript", "Tailwind CSS"],
+        demo: "https://lydaicuong.me",
+        github: "https://github.com/daicuong11/MyPortfolio",
       },
     ],
     buttons: {
@@ -114,13 +135,13 @@ const vi = {
     title: "Cùng tạo nên điều phi thường",
     email: {
       label: "Email",
-      value: "lydaicuong.dev@gmail.com",
-      link: "mailto:lydaicuong.dev@gmail.com",
+      value: "lydaicuong784@gmail.com",
+      link: "mailto:lydaicuong784@gmail.com",
     },
     github: {
       label: "GitHub",
-      value: "github.com/lydaicuong",
-      link: "https://github.com/lydaicuong",
+      value: "github.com/daicuong11",
+      link: "https://github.com/daicuong11",
     },
     linkedin: {
       label: "LinkedIn",
@@ -140,7 +161,7 @@ const vi = {
   // Footer
   footer: {
     name: "Ly Dai Cuong",
-    description: "Xây dựng các giải pháp sáng tạo với công nghệ hiện đại. Đam mê tạo ra những trải nghiệm số xuất sắc.",
+    description: "Kỹ sư phần mềm với mong muốn học hỏi và phát triển mạnh mẽ trong môi trường làm việc chuyên nghiệp. Đam mê phát triển phần mềm và mong muốn củng cố kỹ năng kỹ thuật trong khi đóng góp vào các dự án có tác động.",
     quickLinks: {
       title: "Liên kết nhanh",
       projects: "Dự án",
@@ -163,11 +184,11 @@ const vi = {
   metadata: {
     title: "Ly Dai Cuong | Kỹ sư phần mềm",
     description:
-      "Portfolio AI của Ly Dai Cuong, Kỹ sư phần mềm chuyên về Web, AI và các công nghệ hiện đại.",
+      "Portfolio của Ly Dai Cuong, Kỹ sư phần mềm chuyên về .NET Core, ASP.NET Core, Entity Framework, ABP Framework, Blazor và các công nghệ web hiện đại.",
     openGraph: {
       title: "Ly Dai Cuong | Kỹ sư phần mềm",
       description:
-        "Portfolio AI của Ly Dai Cuong - Lập trình viên Web & Kỹ sư phần mềm",
+        "Portfolio của Ly Dai Cuong - Kỹ sư phần mềm & Lập trình viên Web định hướng AI",
     },
   },
 };

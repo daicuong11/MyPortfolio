@@ -1,0 +1,25 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="favGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="32" height="32" rx="6" fill="url(#favGrad1)"/>
+  
+  <!-- Letter L -->
+  <path d="M 8 8 L 8 20 L 14 20 L 14 16 L 12 16 L 12 12 L 8 12 Z" fill="white" opacity="0.95"/>
+  
+  <!-- Letter D -->
+  <path d="M 16 8 L 16 20 L 22 20 Q 24 20 24 14 Q 24 8 22 8 Z M 18 10 L 22 10 Q 23 10 23 14 Q 23 18 22 18 L 18 18 Z" fill="white" opacity="0.95"/>
+  
+  <!-- Letter C -->
+  <path d="M 26 14 Q 26 8 24 8 Q 22 8 22 14 Q 22 20 24 20 Q 26 20 26 14 M 25 14 Q 25 16 24 16 Q 23 16 23 14 Q 23 12 24 12 Q 25 12 25 14" fill="white" opacity="0.95"/>
+</svg>

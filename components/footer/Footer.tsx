@@ -69,7 +69,7 @@ function Footer() {
               {[
                 { icon: "github", link: "https://github.com/daicuong11" },
                 { icon: "linkedin", link: "https://linkedin.com" },
-                { icon: "email", link: "mailto:daicuongld789@gmail.com" }
+                { icon: "email", link: "mailto:lydaicuong784@gmail.com" }
               ].map((social, i) => (
                 <motion.a
                   key={social.icon}

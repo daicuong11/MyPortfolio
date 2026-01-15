@@ -9,6 +9,11 @@ import {
   SiNextdotjs,
   SiGit,
   SiDocker,
+  SiMongodb,
+  SiMysql,
+  SiDart,
+  SiExpress,
+  SiBlazor,
 } from "react-icons/si";
 import { FaMicrosoft } from "react-icons/fa6";
 import { TbBrandReact } from "react-icons/tb";
@@ -35,12 +40,26 @@ const en = {
           { name: "Redux Toolkit", icon: SiRedux },
           { name: "TanStack Query", icon: TbBrandReact },
           { name: "Next.js", icon: SiNextdotjs },
+          { name: "Blazor", icon: SiBlazor },
         ],
       },
       {
         title: "Backend",
         items: [
-          { name: ".NET / ASP.NET Core", icon: SiDotnet },
+          { name: ".NET Core", icon: SiDotnet },
+          { name: "ASP.NET Core", icon: SiDotnet },
+          { name: "Entity Framework", icon: SiDotnet },
+          { name: "ABP Framework", icon: SiDotnet },
+          { name: "Express.js", icon: SiExpress },
+        ],
+      },
+      {
+        title: "Languages",
+        items: [
+          { name: "C#", icon: SiDotnet },
+          { name: "Java", icon: SiReact },
+          { name: "Dart", icon: SiDart },
+          { name: "JavaScript", icon: SiReact },
         ],
       },
       {
@@ -48,14 +67,16 @@ const en = {
         items: [
           { name: "PostgreSQL", icon: SiPostgresql },
           { name: "SQL Server", icon: FaMicrosoft },
+          { name: "MongoDB", icon: SiMongodb },
+          { name: "MySQL", icon: SiMysql },
         ],
       },
       {
-        title: "Tools & DevOps",
+        title: "Tools & Others",
         items: [
           { name: "Cloudinary", icon: SiCloudinary },
           { name: "Git", icon: SiGit },
-          { name: "Docker", icon: SiDocker },
+          { name: "GitHub", icon: SiGit },
         ],
       },
     ],
@@ -66,34 +87,34 @@ const en = {
     title: "Project Showcase",
     items: [
       {
-        title: "AI E-Commerce Platform",
+        title: "Ajinomoto VNTT - eSales DMS Solution",
         description:
-          "Modern e-commerce platform with AI-based product recommendations and high performance UI.",
-        image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop&q=80",
+          "Enterprise DMS project built on HQSOFT's Xspire Business Platform with the eSales DMS Solution, helping Ajinomoto optimize distribution, improve sales efficiency, and monitor business operations effectively.",
+        image: "/projects/ecommerce.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        tech: ["Next.js", "Tailwind", ".NET", "PostgreSQL"],
+        tech: ["ABP Framework", ".NET Core 9", "C#", "Entity Framework", "Blazor", "DevExpress", "PostgreSQL"],
         demo: "#",
         github: "#",
       },
       {
-        title: "Smart Task Manager",
+        title: "Sabeco AMS",
         description:
-          "Task management system with real-time collaboration and productivity analytics.",
-        image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop&q=80",
+          "Enterprise software project focused on distribution management and sales force automation, built for business process optimization.",
+        image: "/projects/portfolio.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        tech: ["React", "Redux Toolkit", "ASP.NET Core", "SQL Server"],
+        tech: ["ASP.NET MVC", "Razor", "Ext.NET", "C#", "JavaScript", "SQL Server"],
         demo: "#",
         github: "#",
       },
       {
         title: "AI Space Portfolio",
         description:
-          "Cinematic AI-inspired personal portfolio with 3D space and hologram UI.",
-        image: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=600&fit=crop&q=80",
+          "Cinematic AI-inspired personal portfolio with 3D space and hologram UI, showcasing modern web development skills.",
+        image: "/projects/ai-chat.jpg",
         video: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        tech: ["Next.js", "Three.js", "Framer Motion"],
-        demo: "#",
-        github: "#",
+        tech: ["Next.js", "Three.js", "Framer Motion", "TypeScript", "Tailwind CSS"],
+        demo: "https://lydaicuong.me",
+        github: "https://github.com/daicuong11/MyPortfolio",
       },
     ],
     buttons: {
@@ -114,13 +135,13 @@ const en = {
     title: "Let's Build Something Legendary",
     email: {
       label: "Email",
-      value: "lydaicuong.dev@gmail.com",
-      link: "mailto:lydaicuong.dev@gmail.com",
+      value: "lydaicuong784@gmail.com",
+      link: "mailto:lydaicuong784@gmail.com",
     },
     github: {
       label: "GitHub",
-      value: "github.com/lydaicuong",
-      link: "https://github.com/lydaicuong",
+      value: "github.com/daicuong11",
+      link: "https://github.com/daicuong11",
     },
     linkedin: {
       label: "LinkedIn",
@@ -140,7 +161,7 @@ const en = {
   // Footer
   footer: {
     name: "Ly Dai Cuong",
-    description: "Building innovative solutions with modern technologies. Passionate about creating exceptional digital experiences.",
+    description: "Motivated Fresher .NET Developer with a strong eagerness to learn and grow in a professional working environment. Passionate about software development and aspiring to strengthen technical skills while contributing to impactful projects.",
     quickLinks: {
       title: "Quick Links",
       projects: "Projects",
@@ -163,11 +184,11 @@ const en = {
   metadata: {
     title: "Ly Dai Cuong | Software Engineer",
     description:
-      "AI-themed portfolio of Ly Dai Cuong, Software Engineer specialized in Web, AI, and modern technologies.",
+      "Portfolio of Ly Dai Cuong, Software Engineer specialized in .NET Core, ASP.NET Core, Entity Framework, ABP Framework, Blazor, and modern web technologies.",
     openGraph: {
       title: "Ly Dai Cuong | Software Engineer",
       description:
-        "AI Portfolio of Ly Dai Cuong - Web Developer & Software Engineer",
+        "Portfolio of Ly Dai Cuong - Software Engineer & AI-Oriented Web Developer",
     },
   },
 };
