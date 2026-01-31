@@ -1,16 +1,15 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { getTranslations } from "@/lib/i18n";
 import ClientProviders from "@/components/providers/ClientProviders";
+import { siteSeo } from "@/lib/siteSeo";
 
 export const metadata: Metadata = {
   title: {
-    default: "Ly Dai Cuong | Software Engineer",
-    template: "%s | Ly Dai Cuong",
+    default: siteSeo.siteTitle,
+    template: siteSeo.titleTemplate,
   },
-  description:
-    "Portfolio of Ly Dai Cuong, Software Engineer specialized in .NET Core, ASP.NET Core, Entity Framework, ABP Framework, Blazor, and modern web technologies.",
-  metadataBase: new URL("https://lydaicuong.me"),
+  description: siteSeo.siteDescription,
+  metadataBase: new URL(siteSeo.siteUrl),
   icons: {
     icon: [
       { url: "/icon.svg", type: "image/svg+xml" },
@@ -21,11 +20,10 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Ly Dai Cuong | Software Engineer",
-    description:
-      "Portfolio of Ly Dai Cuong - Software Engineer & AI-Oriented Web Developer",
-    url: "https://lydaicuong.me",
-    siteName: "Ly Dai Cuong Portfolio",
+    title: siteSeo.siteTitle,
+    description: siteSeo.siteDescription,
+    url: siteSeo.siteUrl,
+    siteName: siteSeo.siteName,
     locale: "en_US",
     type: "website",
     images: [
@@ -39,27 +37,11 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ly Dai Cuong | Software Engineer",
-    description: "Portfolio of Ly Dai Cuong - Software Engineer & AI-Oriented Web Developer",
+    title: siteSeo.siteTitle,
+    description: siteSeo.siteDescription,
     images: ["/logo.svg"],
   },
-  keywords: [
-    "Ly Dai Cuong",
-    "Lý Đại Cương",
-    "Software Engineer",
-    "Fullstack Developer",
-    ".NET",
-    "Fresher",
-    "Ton Duc Thang University",
-    "Đại học Tôn Đức Thắng",
-    "Dong Nai",
-    "Đồng Nai",
-    "Portfolio",
-    "Web Developer",
-    "ASP.NET",
-    "React",
-    "Next.js",
-  ],
+  keywords: [...siteSeo.keywords],
 };
 
 const personJsonLd = {
