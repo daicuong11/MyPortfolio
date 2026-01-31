@@ -162,6 +162,13 @@ const en = {
   footer: {
     name: "Ly Dai Cuong",
     description: "Motivated Fresher .NET Developer with a strong eagerness to learn and grow in a professional working environment. Passionate about software development and aspiring to strengthen technical skills while contributing to impactful projects.",
+    social: {
+      ariaLabel: {
+        github: "Open GitHub profile (opens in new tab)",
+        linkedin: "Open LinkedIn profile (opens in new tab)",
+        email: "Send email to Ly Dai Cuong",
+      },
+    },
     quickLinks: {
       title: "Quick Links",
       projects: "Projects",
@@ -178,6 +185,12 @@ const en = {
     backToTop: "Back to Top",
     techSignature: "Built with Next.js • Three.js • Framer Motion",
     copyright: `© ${new Date().getFullYear()} Ly Dai Cuong. All rights reserved.`,
+    seo: {
+      summaryLine:
+        "Ly Dai Cuong · Fullstack Developer · .NET · Ton Duc Thang University · Dong Nai · 2003",
+      expandLabel: "Related keywords",
+      collapseLabel: "Show less",
+    },
   },
 
   // Metadata

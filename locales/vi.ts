@@ -162,6 +162,13 @@ const vi = {
   footer: {
     name: "Ly Dai Cuong",
     description: "Kỹ sư phần mềm với mong muốn học hỏi và phát triển mạnh mẽ trong môi trường làm việc chuyên nghiệp. Đam mê phát triển phần mềm và mong muốn củng cố kỹ năng kỹ thuật trong khi đóng góp vào các dự án có tác động.",
+    social: {
+      ariaLabel: {
+        github: "Mở trang GitHub (mở trong tab mới)",
+        linkedin: "Mở trang LinkedIn (mở trong tab mới)",
+        email: "Gửi email cho Lý Đại Cương",
+      },
+    },
     quickLinks: {
       title: "Liên kết nhanh",
       projects: "Dự án",
@@ -178,6 +185,12 @@ const vi = {
     backToTop: "Về đầu trang",
     techSignature: "Xây dựng với Next.js • Three.js • Framer Motion",
     copyright: `© ${new Date().getFullYear()} Ly Dai Cuong. Bảo lưu mọi quyền.`,
+    seo: {
+      summaryLine:
+        "Lý Đại Cương · Fullstack · .NET · Đại học Tôn Đức Thắng · Đồng Nai · 2003",
+      expandLabel: "Từ khóa liên quan",
+      collapseLabel: "Thu gọn",
+    },
   },
 
   // Metadata
